@@ -1,0 +1,108 @@
+{
+  "schema_version": "0.1",
+  "identity": {
+    "name": "",
+    "code": "",
+    "exchange": "",
+    "board": "",
+    "market": "A-share",
+    "status": "active"
+  },
+  "classification": {
+    "sector": "",
+    "industry": "",
+    "sub_industry": "",
+    "concept_tags": [],
+    "theme_tags": []
+  },
+  "market_role": {
+    "a_share_role_tags": [],
+    "role_summary": "",
+    "is_sector_leader": false,
+    "is_sector_anchor": false,
+    "is_high_beta_theme_stock": false,
+    "is_proxy_or_substitute_stock": false,
+    "notes": ""
+  },
+  "core_business": {
+    "one_sentence": "",
+    "main_products_or_services": [],
+    "revenue_exposure_summary": ""
+  },
+  "industry_position": {
+    "position_summary": "",
+    "leader_follower_niche_proxy": "",
+    "competitive_edge": "",
+    "substitutability": "",
+    "bottleneck_or_scarcity_value": ""
+  },
+  "supply_chain_position": {
+    "upstream_midstream_downstream": "",
+    "key_customers": [],
+    "key_suppliers": [],
+    "key_components_or_products": [],
+    "supply_chain_importance": ""
+  },
+  "real_exposure_vs_market_bucket": {
+    "market_bucket": "",
+    "actual_business_exposure": "",
+    "proxy_or_real_beneficiary": "",
+    "concept_purity": "",
+    "why_market_trades_it": "",
+    "risk_of_hype_without_fundamentals": ""
+  },
+  "why_it_moves": {
+    "main_price_drivers": [],
+    "positive_catalysts": [],
+    "negative_catalysts": [],
+    "policy_sensitivity": [],
+    "sector_sensitivity": [],
+    "macro_sensitivity": [],
+    "company_specific_sensitivity": []
+  },
+  "current_market_narrative": {
+    "narrative_summary": "",
+    "narrative_status": "unknown",
+    "what_would_confirm_narrative": [],
+    "what_would_contradict_narrative": [],
+    "last_reviewed": ""
+  },
+  "watch_factors": {
+    "daily": [],
+    "weekly": [],
+    "quarterly": [],
+    "ignore_unless_directly_confirmed": []
+  },
+  "financial_digest": {
+    "last_financial_snapshot_update": "",
+    "financial_quality_summary": "",
+    "business_support_for_story": "",
+    "main_financial_red_flags": [],
+    "read_financial_snapshot_when": []
+  },
+  "valuation_digest": {
+    "last_valuation_update": "",
+    "valuation_status": "",
+    "valuation_summary": "",
+    "what_market_is_pricing_in": "",
+    "read_financial_valuation_snapshot_when": []
+  },
+  "market_behavior_digest": {
+    "last_market_behavior_update": "",
+    "trading_personality": "",
+    "recent_key_levels_summary": "",
+    "recent_notable_behavior": "",
+    "read_market_behavior_profile_when": []
+  },
+  "linked_files": {
+    "financial_valuation_snapshot": "./financial_valuation_snapshot.json",
+    "market_behavior_profile": "./market_behavior_profile.json"
+  },
+  "cache_status": {
+    "created_at": "",
+    "last_full_profile_refresh": "",
+    "last_daily_check": "",
+    "sections_needing_refresh": []
+  },
+  "change_log": []
+}

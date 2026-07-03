@@ -1,0 +1,42 @@
+{
+    "tracked stocks readme": {
+        "path": "~/.openclaw/shared_files/tracked_stocks/tracked_stocks_readme.md",
+        "description": "Instructions on how to interact with tracked_stocks.json."
+    },
+    "tracked stocks": {
+        "path": "~/.openclaw/shared_files/tracked_stocks/tracked_stocks.json",
+        "description": "The list of all stocks that are being tracked for research, analysis, or trading. Always read tracked stocks readme file first before editing this json file."
+    },
+    "source guide": {
+        "path": "~/.openclaw/shared_files/source_guide.md",
+        "description": "Source hierarchy (A/B/C/D) and credibility rules for financial research."
+    },
+    "learned research lessons": {
+        "path": "~/.openclaw/shared_files/learned_research_lessons.md",
+        "description": "Curated, durable lessons from past research. Read and write."
+    },
+    "user research priorities": {
+        "path": "~/.openclaw/shared_files/user_research_priorities.md",
+        "description": "User-defined priority topics and standing instructions."
+    },
+    "logs readme": {
+        "path": "~/.openclaw/shared_files/logs/logs_readme.md",
+        "description": "To be read first before any files in this folder. Documents log schemas."
+    },
+    "daily market notes": {
+        "path": "~/.openclaw/shared_files/logs/daily_market_notes.jsonl",
+        "description": "Daily macro, news, and sector observations. Append-only."
+    },
+    "prediction log": {
+        "path": "~/.openclaw/shared_files/logs/prediction_log.jsonl",
+        "description": "Specific, falsifiable stock predictions. Append-only."
+    },
+    "market outcomes": {
+        "path": "~/.openclaw/shared_files/logs/market_outcomes.jsonl",
+        "description": "Actual market outcomes; may link to predictions. Append-only."
+    },
+    "weekly reflections": {
+        "path": "~/.openclaw/shared_files/logs/weekly_reflections.jsonl",
+        "description": "Weekly review summaries of what worked and what failed. Append-only."
+    }
+}

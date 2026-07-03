@@ -1,0 +1,96 @@
+{
+  "schema_version": "0.1",
+  "stock": {
+    "name": "",
+    "code": "",
+    "market": "A-share"
+  },
+  "snapshot_meta": {
+    "as_of": "",
+    "reporting_period": "",
+    "last_updated": "",
+    "currency": "CNY",
+    "source_refs": []
+  },
+  "financial_summary": {
+    "one_paragraph_summary": "",
+    "business_support_for_story": "",
+    "financial_quality": "",
+    "trend": "",
+    "main_positive_points": [],
+    "main_negative_points": [],
+    "red_flags": []
+  },
+  "core_metrics": {
+    "market_cap": null,
+    "float_market_cap": null,
+    "revenue": null,
+    "revenue_yoy": null,
+    "net_profit_attributable": null,
+    "net_profit_yoy": null,
+    "deducted_net_profit": null,
+    "deducted_net_profit_yoy": null,
+    "gross_margin": null,
+    "net_margin": null,
+    "roe": null,
+    "operating_cash_flow": null,
+    "operating_cash_flow_to_net_profit": null,
+    "cash_and_equivalents": null,
+    "total_debt": null,
+    "asset_liability_ratio": null,
+    "accounts_receivable": null,
+    "inventory": null,
+    "goodwill": null
+  },
+  "quality_checks": {
+    "cash_flow_quality": "",
+    "receivables_risk": "",
+    "inventory_risk": "",
+    "goodwill_impairment_risk": "",
+    "government_subsidy_or_non_recurring_gain_distortion": "",
+    "customer_concentration_risk": "",
+    "st_risk": ""
+  },
+  "concept_exposure": {
+    "concept_revenue_exposure": "",
+    "business_purity": "",
+    "proxy_stock_risk": "",
+    "notes": ""
+  },
+  "valuation": {
+    "current_price": null,
+    "valuation_status": "",
+    "primary_method": "",
+    "fair_value_range": {
+      "low": null,
+      "base": null,
+      "high": null
+    },
+    "selected_multiple": null,
+    "peer_multiple_range": "",
+    "historical_valuation_summary": "",
+    "what_market_is_pricing_in": "",
+    "revaluation_triggers": [],
+    "devaluation_triggers": [],
+    "invalidation_conditions": [],
+    "confidence": ""
+  },
+  "refresh_control": {
+    "next_suggested_refresh": "",
+    "refresh_triggers": [
+      "new quarterly or annual report",
+      "earnings guidance",
+      "major price rerating",
+      "major change in concept exposure",
+      "major balance sheet or shareholder risk event"
+    ],
+    "sections_needing_refresh": []
+  },
+  "digest_for_stock_profile": {
+    "financial_quality_summary": "",
+    "business_support_for_story": "",
+    "main_financial_red_flags": [],
+    "valuation_status": "",
+    "what_market_is_pricing_in": ""
+  }
+}

@@ -1,0 +1,13 @@
+# Ignore everything by default
+*
+
+# But do not ignore directories, so Git can look inside them
+!*/
+
+# Allow these two folders
+!workspace/**
+!workspace-researcher/**
+!shared_files/**
+
+# Keep the .gitignore itself tracked
+!.gitignore

@@ -1,0 +1,74 @@
+{
+  "schema_version": "0.1",
+  "stock": {
+    "name": "",
+    "code": "",
+    "market": "A-share"
+  },
+  "market_behavior_meta": {
+    "as_of": "",
+    "lookback_period": "3-6 months",
+    "last_updated": "",
+    "source_refs": []
+  },
+  "trading_personality": {
+    "summary": "",
+    "style_tags": [],
+    "theme_driven": null,
+    "sector_leader_or_follower": "",
+    "tends_to_follow_sector": "",
+    "tends_to_fade_after_spikes": "",
+    "institutional_or_retail_style": "",
+    "liquidity_notes": ""
+  },
+  "recent_key_levels": {
+    "recent_highs": [],
+    "recent_lows": [],
+    "important_support_zones": [],
+    "important_resistance_zones": [],
+    "breakout_levels": [],
+    "breakdown_levels": []
+  },
+  "recent_notable_days": [
+    {
+      "date": "",
+      "event_type": "",
+      "price_move": "",
+      "volume_or_turnover_change": "",
+      "sector_context": "",
+      "likely_cause": "",
+      "follow_through_result": "",
+      "lesson": ""
+    }
+  ],
+  "sector_relative_behavior": {
+    "relative_strength_summary": "",
+    "moves_with_sector": "",
+    "leads_or_lags_sector": "",
+    "recent_divergences": []
+  },
+  "watch_conditions": {
+    "bullish_conditions": [],
+    "bearish_conditions": [],
+    "intraday_alert_conditions": [],
+    "ignore_conditions": []
+  },
+  "refresh_control": {
+    "next_suggested_refresh": "",
+    "refresh_triggers": [
+      "limit-up or limit-down day",
+      "large price move",
+      "large turnover/volume jump",
+      "breakout or breakdown",
+      "sector hotness changes",
+      "stock behaves differently from sector"
+    ],
+    "sections_needing_refresh": []
+  },
+  "digest_for_stock_profile": {
+    "trading_personality": "",
+    "recent_key_levels_summary": "",
+    "recent_notable_behavior": "",
+    "main_intraday_watch_conditions": []
+  }
+}
