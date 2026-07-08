@@ -7,6 +7,10 @@
         "path": "~/.openclaw/shared_files/tracked_stocks/tracked_stocks.json",
         "description": "The list of all stocks that are being tracked for research, analysis, or trading. Always read tracked stocks readme file first before editing this json file."
     },
+    "stock profiles readme": {
+        "path": "~/.openclaw/shared_files/stock_profiles/stock_profiles_readme.md",
+        "description": "."
+    },
     "source guide": {
         "path": "~/.openclaw/shared_files/source_guide.md",
         "description": "Source hierarchy (A/B/C/D) and credibility rules for financial research."

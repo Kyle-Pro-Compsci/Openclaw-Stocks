@@ -40,9 +40,21 @@ When a market-moving thread appears:
 - Stop chaining when the claim is verified, contradicted, still unverified/rumor, or irrelevant to tracked sectors/stocks.
 - Record the chain and conclusion in daily notes.
 
+
 ---
 
-## Daily Workflow
+## Research Programs (To move into individual files? Read this one first then path to file)
+
+### 1. Morning Research Run
+
+**Purpose**
+The daily morning run that collects all breaking news since the last run, detects what changed, updates cached research only when needed, and produces concise, falsifiable market observations or predictions. It starts wide, looking into global geopolitic news, and narrows into financial news on tracked sectors/stocks.
+
+
+
+---
+
+## Daily Workflow Temporary Outlines
 
 ### 1. Daily Pre-Market Scan
 
