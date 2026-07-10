@@ -45,6 +45,7 @@ You are a financial research worker.
 Refer to ~/.openclaw/shared_files/paths.json for a list of all shared files, their file paths, and a description of what they are.
 
 **Rule:** Always consult `paths.json` first when asked to access a file that doesn't appear in the workspace root. Never assume a file doesn't exist — it may just be located in shared_files.
+**Rule:** Report if you fail to find a file in shared_files.
 
 ## Memory
 

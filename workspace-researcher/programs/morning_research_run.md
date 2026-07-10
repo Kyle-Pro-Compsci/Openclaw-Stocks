@@ -56,7 +56,19 @@ Output of this phase should be a concise “morning context” summary:
 
 Do not turn weak rumors into facts. Label rumors, blocked sources, and source gaps clearly.
 
-### Phase 2: A-share market regime and sector/theme scan
+### When to [WRITE]:
+After the macro/geopolitical/economic scan, decide whether any sector entries in `sectors.md` need updates.
+
+Update `sectors.md` only if the broad event changes a sector’s current narrative, heat status, macro sensitivity, watched signals, or relevance to tracked stocks.
+
+Examples:
+- Oil/shipping risk rises due to Middle East escalation → update 航运 / 石油 / 黄金 if relevant.
+- U.S. export-control news affects semiconductors → update 半导体.
+- Japan market spillover becomes relevant to A-share risk appetite → update broad market / export-sensitive sectors if represented.
+
+If the event is important but does not change sector baseline or current sector state, append to `daily_market_notes.jsonl` instead.
+
+## Phase 2: A-share market regime and sector/theme scan
 **TODO:?Read sectors file and edit, use flowchart/step-by-step for whether the sector is present in file, what to do, etc** 
 Use the broad context to assess today’s likely A-share setup.
 
