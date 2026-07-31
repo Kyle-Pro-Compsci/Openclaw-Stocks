@@ -24,10 +24,24 @@ Before execution, read or locate through `~/.openclaw/shared_files/paths.json`:
 
 When relevant, also read:
 
-* Recent `daily_market_notes.jsonl`
-* Recent `prediction_log.jsonl`
-* Recent `market_outcomes.jsonl`
+* Recent `daily market notes`
+* Recent `prediction log`
+* Recent `market outcomes`
 * Existing stock profile files for active tracked stocks
+
+## Phase 0: Setup and recent-state check
+
+Use `paths.json` to locate required files.
+
+Check recent logs and cached context enough to answer:
+
+* What was already known yesterday or in the last run?
+* Are there open predictions that need follow-up?
+* Which user research priorities are currently active?
+* Which sectors/themes are already marked as hot, warming, cooling, or uncertain?
+* Which tracked stocks are active or high priority?
+
+Do not reread large or heavy files unless needed. Only read a file if it's relevant to what you're currently doing.
 
 ## Phase 1: Wide macro / geopolitical / economic scan
 
@@ -46,27 +60,15 @@ Check for current developments in:
 
 Output of this phase should be a concise “morning context” summary:
 
-* `what_changed`
-* `why_it_matters`
-* `affected_markets`
-* `affected_sectors_or_themes`
-* `confidence`
-* `source_notes`
-* `uncertainties`
+* what changed;
+* why it matters;
+* affected markets;
+* affected sectors/themes;
+* confidence;
+* source notes;
+* uncertainties.
 
 Do not turn weak rumors into facts. Label rumors, blocked sources, and source gaps clearly.
-
-### When to [WRITE]:
-After the macro/geopolitical/economic scan, decide whether any sector entries in `sectors.md` need updates.
-
-Update `sectors.md` only if the broad event changes a sector’s current narrative, heat status, macro sensitivity, watched signals, or relevance to tracked stocks.
-
-Examples:
-- Oil/shipping risk rises due to Middle East escalation → update 航运 / 石油 / 黄金 if relevant.
-- U.S. export-control news affects semiconductors → update 半导体.
-- Japan market spillover becomes relevant to A-share risk appetite → update broad market / export-sensitive sectors if represented.
-
-If the event is important but does not change sector baseline or current sector state, append to `daily_market_notes.jsonl` instead.
 
 ## Phase 2: A-share market regime and sector/theme scan
 **TODO:?Read sectors file and edit, use flowchart/step-by-step for whether the sector is present in file, what to do, etc** 

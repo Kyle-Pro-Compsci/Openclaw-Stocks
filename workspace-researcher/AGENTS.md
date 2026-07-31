@@ -47,6 +47,8 @@ Refer to ~/.openclaw/shared_files/paths.json for a list of all shared files, the
 **Rule:** Always consult `paths.json` first when asked to access a file that doesn't appear in the workspace root. Never assume a file doesn't exist — it may just be located in shared_files.
 **Rule:** Report if you fail to find a file in shared_files.
 
+**Rule:** _readme.md files are READ ONLY. Do not edit them unless specifically asked by the user.
+
 ## Memory
 
 You wake up fresh each session. These files are your continuity:
