@@ -1,7 +1,11 @@
 # Morning Research Run
 
 ## Purpose
-The daily morning run that collects all breaking news since the last run, detects what changed, updates cached research only when needed, and produces concise, falsifiable market observations or predictions. It starts wide, looking into global geopolitic news, and narrows into financial news on tracked sectors/stocks.
+The daily morning run collects important developments since the last run, detects what changed, updates cached research only when needed, and produces concise, falsifiable market observations or predictions.
+
+The process starts wide and narrows, going from:
+
+Global / macro -> Chinese market -> Sector and theme movement -> Tracked Stocks
 
 This program should avoid generic market commentary. It should answer:
 
@@ -91,7 +95,7 @@ For each important sector/theme, classify:
 * `tracked_stock_overlap`: which tracked stocks are relevant
 * `follow_up_needed`: yes/no and why
 
-### Phase 3: Tracked stock selection
+## Phase 3: Tracked stock selection
 
 Read `tracked_stocks.json`.
 
@@ -105,7 +109,7 @@ For the morning run, prioritize:
 
 Do not analyze every stock in full if nothing changed. For unaffected stocks, it is acceptable to note “no material new information found” if checked.
 
-### Phase 4: Stock profile/cache check
+## Phase 4: Stock profile/cache check
 
 For each selected stock:
 
@@ -114,7 +118,7 @@ For each selected stock:
 3. If a profile exists, read `stock_profile.json` first.
 4. Use the stock profile to decide whether heavier files are needed.
 
-Read `financial_snapshot.json` only when:
+Read `financial snapshot` only when: (TODO: Referring to something in the stock profile, not in paths.json, look into this)
 
 * Financial quality matters.
 * Earnings, revenue, margins, cash flow, balance sheet, or concept revenue exposure matters.
@@ -133,7 +137,9 @@ Read market behavior / trading behavior profile if available when:
 * There is a sharp move, gap, limit-up/limit-down, volume/turnover jump, breakout/breakdown, sector divergence, or intraday trading relevance.
 * Recent price behavior matters more than financial details.
 
-### Phase 5: Chained follow-up searches
+## Chained follow-up search rule
+
+This rule can trigger during any phase.
 
 If a search reveals a potentially market-moving thread, run follow-up searches instead of stopping at the first result.
 
@@ -142,20 +148,22 @@ Continue follow-up until one of these is true:
 1. The claim is verified by stronger sources.
 2. The claim is contradicted.
 3. The claim remains unverified and must be labeled as rumor or low-confidence.
-4. The thread is not relevant to tracked sectors/stocks.
-5. Additional searches are no longer producing materially new information.
+4. The thread is not relevant to current sectors, user priorities, or tracked stocks.
+5. Additional searches no longer produce materially new information.
 
 For each chained thread, record:
 
-* Original trigger
-* Strongest confirming source
-* Strongest contradicting source, if any
-* Current confidence
-* Market relevance
-* Affected tracked stocks/sectors
-* Whether profile/cache update is needed
+* original trigger;
+* strongest confirming source;
+* strongest contradicting source, if any;
+* current confidence;
+* market relevance;
+* affected sectors/themes;
+* affected tracked stocks, if any;
+* whether a file update is needed.
 
-### Phase 6: Change detection
+
+### Phase 5: Change detection
 
 For each relevant stock or sector, ask:
 
@@ -170,7 +178,7 @@ For each relevant stock or sector, ask:
 
 Only update cached files when a specific section has changed or is stale. Do not rewrite full profiles just to make them look cleaner.
 
-### Phase 7: Logging rules
+### Phase 6: Logging rules
 
 Append to `daily_market_notes.jsonl` when there is a meaningful market, macro, sector, or stock note worth preserving.
 
@@ -191,7 +199,7 @@ Do not force a prediction when evidence is weak. It is acceptable to say there i
 
 Do not rewrite old prediction entries. If later evaluation is needed, append to `market_outcomes.jsonl`.
 
-### Phase 8: Output summary
+### Phase 7: Output summary
 
 Return a concise supervisor-ready report with these sections:
 
