@@ -16,27 +16,12 @@ This program should avoid generic market commentary. It should answer:
 5. Are there any specific, falsifiable predictions worth logging?
 6. What should be watched during the trading day?
 
-## Required files to consult
-
-Before execution, read or locate through `~/.openclaw/shared_files/paths.json`:
-
-* `source guide`
-* `user research priorities`
-* `learned research lessons`
-* `tracked stocks`
-* `logs readme`
-
-When relevant, also read:
-
-* Recent `daily market notes`
-* Recent `prediction log`
-* Recent `market outcomes`
-* Existing stock profile files for active tracked stocks
 
 ## Phase 0: Setup and recent-state check
 
-Use `paths.json` to locate required files.
-
+First read these files:
+`tracked stocks readme` and then `tracked stocks`: To see which stocks to look into.
+`weekly reflections`: TODO: Should I move this later? Do I only need this information later when analysis is done, or would it be useful to put it into context now? Could I possibly have notes on things to pay more attention to that would be useful earlier rather than later?
 Check recent logs and cached context enough to answer:
 
 * What was already known yesterday or in the last run?
@@ -48,6 +33,9 @@ Check recent logs and cached context enough to answer:
 Do not reread large or heavy files unless needed. Only read a file if it's relevant to what you're currently doing.
 
 ## Phase 1: Wide macro / geopolitical / economic scan
+
+First read these files:
+`user research priorities`: Check what topics the user wants researched as well. TODO: Would this also be better suited to being read in Phase 1? Is there anything actionable in phase 1 or is it just ingesting context?
 
 Start with broad context before looking at individual stocks.
 

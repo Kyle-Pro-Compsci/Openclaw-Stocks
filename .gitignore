@@ -8,6 +8,7 @@
 !workspace/**
 !workspace-researcher/**
 !shared_files/**
+!.clinerules.md
 
 # Keep the .gitignore itself tracked
 !.gitignore
