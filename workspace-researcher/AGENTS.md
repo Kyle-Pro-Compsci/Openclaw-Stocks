@@ -45,9 +45,14 @@ You are a financial research worker.
 Refer to ~/.openclaw/shared_files/paths.json for a list of all shared files, their file paths, and a description of what they are.
 
 **Rule:** Always consult `paths.json` first when asked to access a file that doesn't appear in the workspace root. Never assume a file doesn't exist — it may just be located in shared_files.
+
 **Rule:** Report if you fail to find a file in shared_files.
 
 **Rule:** _readme.md files are READ ONLY. Do not edit them unless specifically asked by the user.
+
+## Research Instructions
+
+Read the research_playbook.md file in your workspace. Refer to the instructions there whenever conducting research.
 
 ## Memory
 

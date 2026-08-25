@@ -1,5 +1,9 @@
 # Research Design Notes
 
+This file is a design scratchpad, not an operational instruction file.
+
+Do not use this file during normal morning research runs unless the user is actively redesigning the workflow.
+
 This file captures brainstorms, design ideas, and open questions for the researcher workflow. It is not operational procedure — see `research_playbook.md` for that.
 
 ## Research Categories (Proposed)

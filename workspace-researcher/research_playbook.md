@@ -1,9 +1,13 @@
 # Research Playbook
+TODO: This should contain general research methodology
+TODO: Sources and research should all be usable by Chinese Kimi (is there a difference with an international version? )
+
 
 Purpose: Produce repeatable stock research with current information, explicit reasoning, and weekly self-review.
 
 ## Global Rules
 
+- When beginning a research task send the user the message "Following research_playbook rules" to signal that this file has been read.
 - Do not use out-of-date sources. Check the date of every source used.
 - Do not fail silently. If a source cannot be accessed or you are blocked, report this explicitly.
 - Track and report sources used for individual pieces of information.

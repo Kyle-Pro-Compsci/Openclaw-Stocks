@@ -9,7 +9,15 @@
     },
     "stock profiles readme": {
         "path": "~/.openclaw/shared_files/stock_profiles/stock_profiles_readme.md",
-        "description": "."
+        "description": "TODO"
+    },
+    "sectors readme": {
+        "path": "~/.openclaw/shared_files/sectors/sectors_readme.md",
+        "description": "TODO"
+    },
+    "sectors": {
+        "path": "~/.openclaw/shared_files/sectors/sectors.md",
+        "description": "TODO"
     },
     "source guide": {
         "path": "~/.openclaw/shared_files/source_guide.md",
