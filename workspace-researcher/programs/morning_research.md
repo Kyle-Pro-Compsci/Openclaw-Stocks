@@ -16,12 +16,14 @@ This program should avoid generic market commentary. It should answer:
 5. Are there any specific, falsifiable predictions worth logging?
 6. What should be watched during the trading day?
 
+TODO: Consider whether to output to the user for each phase, or just to go through all these steps and then consolidate a final report at the end. I am leaning towards final report but for now can output for each phase for transparency.
 
 ## Phase 0: Setup and recent-state check
 
 First read these files:
-`tracked stocks readme` and then `tracked stocks`: To see which stocks to look into.
-`weekly reflections`: TODO: Should I move this later? Do I only need this information later when analysis is done, or would it be useful to put it into context now? Could I possibly have notes on things to pay more attention to that would be useful earlier rather than later?
+`learned research lessons` - Strongly consider the learnings here. What is written here should be prioritized as it is the most up to date.
+
+TODO: Consider whether reading the reflections would be useful as well
 Check recent logs and cached context enough to answer:
 
 * What was already known yesterday or in the last run?
@@ -62,8 +64,11 @@ Output of this phase should be a concise “morning context” summary:
 
 Do not turn weak rumors into facts. Label rumors, blocked sources, and source gaps clearly.
 
+Record key developments in `daily_market_notes.jsonl`.
+
 ## Phase 2: A-share market regime and sector/theme scan
 **TODO:?Read sectors file and edit, use flowchart/step-by-step for whether the sector is present in file, what to do, etc** 
+First read `sectors readme` and `sectors`.
 Use the broad context to assess today’s likely A-share setup.
 
 Check:

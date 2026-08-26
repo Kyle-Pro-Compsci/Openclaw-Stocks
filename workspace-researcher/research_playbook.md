@@ -1,32 +1,50 @@
 # Research Playbook
 TODO: This should contain general research methodology
 TODO: Sources and research should all be usable by Chinese Kimi (is there a difference with an international version? )
+TODO: Add stuff about Kimi and add to the Claude playbook which AI openclaw is using so it can work around it.
 
+## Purpose
 
-Purpose: Produce repeatable stock research with current information, explicit reasoning, and weekly self-review.
+This playbook defines the general research standards, reasoning habits, and file-use rules for the Researcher agent.
+
+It is not a step-by-step cron program. Specific workflows, such as the daily morning run, should live in individual program files such as:
+
+- `workspace-researcher/programs/morning_research_run.md`
+
+Use this playbook for every macro, sector, theme, and stock research task. Use the specific program file for the execution order of a scheduled run.
+
+The goal is to produce repeatable stock research with current information, explicit reasoning, controlled file updates, and reviewable predictions.
 
 ## Global Rules
 
 - When beginning a research task send the user the message "Following research_playbook rules" to signal that this file has been read.
-- Do not use out-of-date sources. Check the date of every source used.
+- Do not use out-of-date sources without labeling them as historical. Check the date of every source used.
 - Do not fail silently. If a source cannot be accessed or you are blocked, report this explicitly.
 - Track and report sources used for individual pieces of information.
-- Do not hallucinate. Do not fabricate results that "sound right."
+- Do not hallucinate. Do not fabricate information, sources, figures, or market reactions.
 - Separate facts, interpretation, prediction, and uncertainty clearly.
-- Label rumors as rumors; do not convert rumor into fact.
+- Label rumors as rumors; do not convert rumor, market chatter, or social-media sentiment into fact.
 - Only log predictions that are specific and falsifiable.
 - Do not repeat yesterday’s analysis unless something is still relevant and the reason is stated.
+- Prefer concise, actionable conclusions over long generic summaries.
+- Do not repeat prior analysis unless it remains relevant and you state why.
+- If nothing material changed, say so directly.
 
 ## Required Files to Consult
 
 Before beginning any research pass, read:
 
-- `~/.openclaw/shared_files/paths.json` — shared file index and locations
-- `~/.openclaw/shared_files/tracked_stocks/tracked_stocks.json` — current watchlist and sector map
-- `~/.openclaw/shared_files/tracked_stocks/tracked_stocks_readme.md` — how to read/write the watchlist
 - `~/.openclaw/shared_files/user_research_priorities.md` — user-defined priority topics
 - `~/.openclaw/shared_files/learned_research_lessons.md` — durable lessons from past research
 - `~/.openclaw/shared_files/source_guide.md` — source hierarchy and credibility rules
+
+## Source discipline
+
+Use `source_guide.md` as the authority for source reliability.
+
+## Self Thinking
+
+TODO: Use the learned_research_lessons.md. Every session the AI should read the aforementioned file, follow 
 
 ## Methodology: Top-Down Research
 
@@ -105,21 +123,6 @@ The daily morning run that collects all breaking news since the last run, detect
 - Log outcomes to `market_outcomes.jsonl`.
 - Link outcomes to `prediction_id` when evaluating a specific prediction; use `null` for general market notes.
 - Append a brief daily summary to `daily_market_notes.jsonl`.
-
----
-
-## Weekly Research / Reflection
-
-Once per week (or per standing order / cron trigger):
-
-1. Read all `daily_market_notes.jsonl` entries from the week.
-2. Read all predictions and outcomes from the week.
-3. Summarize what worked, what failed, and notable insights.
-4. Write the weekly summary to `weekly_reflections.jsonl`.
-5. Distill durable lessons into `learned_research_lessons.md`.
-   - Raw weekly reflections belong in `weekly_reflections.jsonl`.
-   - Curated, long-term lessons belong in `learned_research_lessons.md`.
-   - Do not dump raw reflections into `research_playbook.md` or `AGENTS.md`.
 
 ---
 
