@@ -13,3 +13,4 @@
  ## Open ended questions
  **Below are questions that are of concern to the user. Consider them, but they do not necessarily require a direct answer.**
  - Does the Chinese market still react strongly to the developments of the war in Iran and the Strait of Hormuz?
+<!-- READ-CHECK: RC-PRIOR-F8K2 -->

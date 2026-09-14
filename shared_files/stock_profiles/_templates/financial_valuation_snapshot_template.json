@@ -1,10 +1,12 @@
 {
-  "schema_version": "0.1",
+  "schema_version": "0.2",
+  "_comment": "The numbers, and what the price implies. Read when financial quality or valuation actually matters - not every day. Fill what research established; leave the rest null. A null is information, an invented figure is corruption.",
+
   "stock": {
     "name": "",
-    "code": "",
-    "market": "A-share"
+    "code": ""
   },
+
   "snapshot_meta": {
     "as_of": "",
     "reporting_period": "",
@@ -12,85 +14,73 @@
     "currency": "CNY",
     "source_refs": []
   },
-  "financial_summary": {
-    "one_paragraph_summary": "",
-    "business_support_for_story": "",
+
+  "summary": {
     "financial_quality": "",
     "trend": "",
-    "main_positive_points": [],
-    "main_negative_points": [],
-    "red_flags": []
+    "supports_the_story": "",
+    "_supports_note": "Does the business evidence actually back the market narrative, or is the story running ahead of the numbers?",
+    "main_positives": [],
+    "main_negatives": []
   },
+
   "core_metrics": {
+    "_note": "The small set that usually decides the judgment. Anything else worth noting goes in other_metrics rather than expanding this list.",
     "market_cap": null,
-    "float_market_cap": null,
     "revenue": null,
     "revenue_yoy": null,
     "net_profit_attributable": null,
     "net_profit_yoy": null,
     "deducted_net_profit": null,
+    "_deducted_note": "扣非归母净利润 - often the more honest profit number",
     "deducted_net_profit_yoy": null,
     "gross_margin": null,
     "net_margin": null,
-    "roe": null,
     "operating_cash_flow": null,
-    "operating_cash_flow_to_net_profit": null,
-    "cash_and_equivalents": null,
-    "total_debt": null,
-    "asset_liability_ratio": null,
-    "accounts_receivable": null,
-    "inventory": null,
-    "goodwill": null
+    "asset_liability_ratio": null
   },
+
+  "other_metrics": {},
+  "_other_metrics_note": "Free-form. Add only figures that matter for this particular company - ROE, inventory, goodwill, receivables, order book, capacity. Do not pre-populate.",
+
   "quality_checks": {
-    "cash_flow_quality": "",
-    "receivables_risk": "",
-    "inventory_risk": "",
-    "goodwill_impairment_risk": "",
-    "government_subsidy_or_non_recurring_gain_distortion": "",
-    "customer_concentration_risk": "",
-    "st_risk": ""
+    "_note": "Only fill what is actually a concern for this company. Leave the rest empty rather than writing 'no issue' everywhere.",
+    "cash_flow_vs_profit": "",
+    "non_recurring_or_subsidy_distortion": "",
+    "customer_concentration": "",
+    "other_risks": []
   },
+
   "concept_exposure": {
-    "concept_revenue_exposure": "",
-    "business_purity": "",
-    "proxy_stock_risk": "",
-    "notes": ""
+    "revenue_from_the_theme": "",
+    "verdict": "",
+    "_verdict_options": "real beneficiary | partial exposure | proxy/concept stock | unclear",
+    "notes": "",
+    "_note": "This is the evidence behind real_or_proxy in stock_profile.json. Keep the two consistent."
   },
+
   "valuation": {
     "current_price": null,
-    "valuation_status": "",
-    "primary_method": "",
-    "fair_value_range": {
-      "low": null,
-      "base": null,
-      "high": null
-    },
-    "selected_multiple": null,
-    "peer_multiple_range": "",
-    "historical_valuation_summary": "",
+    "status": "",
+    "_status_options": "cheap | fair | expensive | speculative | unclear",
+    "basis": "",
+    "_basis_note": "How the judgment was reached - peer multiple, historical range, earnings power. Prefer a practical range over fake precision; avoid DCF unless the business is stable and it is genuinely needed.",
     "what_market_is_pricing_in": "",
-    "revaluation_triggers": [],
-    "devaluation_triggers": [],
-    "invalidation_conditions": [],
+    "would_rerate_up": [],
+    "would_rerate_down": [],
+    "invalidation": "",
     "confidence": ""
   },
+
   "refresh_control": {
     "next_suggested_refresh": "",
-    "refresh_triggers": [
-      "new quarterly or annual report",
-      "earnings guidance",
-      "major price rerating",
-      "major change in concept exposure",
-      "major balance sheet or shareholder risk event"
-    ],
+    "stock_specific_triggers": [],
+    "_triggers_note": "EXCEPTIONS ONLY. Standard triggers (new report, guidance, rerating, concept-exposure change, balance-sheet or shareholder risk event) apply to every stock and live in stock_profiles_readme.md.",
     "sections_needing_refresh": []
   },
+
   "digest_for_stock_profile": {
-    "financial_quality_summary": "",
-    "business_support_for_story": "",
-    "main_financial_red_flags": [],
-    "valuation_status": "",
-    "what_market_is_pricing_in": ""
+    "summary": "",
+    "_note": "One or two lines, copied into financial_digest in stock_profile.json whenever this file changes, so the cover page never contradicts the file beneath it."
   }
 }

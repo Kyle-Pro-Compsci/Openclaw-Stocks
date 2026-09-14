@@ -9,27 +9,39 @@
     },
     "stock profiles readme": {
         "path": "~/.openclaw/shared_files/stock_profiles/stock_profiles_readme.md",
-        "description": "TODO"
+        "description": "Rules for the per-stock profile folders: file layout, folder naming, which file answers which question, and when each is stale. Read before creating or editing any stock profile file."
+    },
+    "stock profiles": {
+        "path": "~/.openclaw/shared_files/stock_profiles/",
+        "description": "Directory of cached per-stock research. One folder per stock, named by bare exchange code. Read stock profiles readme first."
+    },
+    "stock profile template": {
+        "path": "~/.openclaw/shared_files/stock_profiles/_templates/stock_profile_template.json",
+        "description": "Template for stock_profile.json - the cover page read first for any stock-specific task."
+    },
+    "financial valuation snapshot template": {
+        "path": "~/.openclaw/shared_files/stock_profiles/_templates/financial_valuation_snapshot_template.json",
+        "description": "Template for financial_valuation_snapshot.json - financial quality, business evidence, and valuation assumptions in one file."
     },
     "sectors readme": {
         "path": "~/.openclaw/shared_files/sectors/sectors_readme.md",
-        "description": "TODO"
+        "description": "Rules for maintaining sectors.md: entry format, controlled vocabularies, update triggers, and bloat control. Read before writing to sectors.md."
     },
     "sectors": {
         "path": "~/.openclaw/shared_files/sectors/sectors.md",
-        "description": "TODO"
+        "description": "Compact sector context board: heat status, current view, drivers, evidence for and against, and watch points. Sector-level only, no stock-specific detail."
     },
     "source guide": {
         "path": "~/.openclaw/shared_files/source_guide.md",
-        "description": "Source hierarchy (A/B/C/D) and credibility rules for financial research."
+        "description": "Source hierarchy (A/B/C/D) and credibility rules for financial research, including China-market and Kimi search handling."
     },
     "learned research lessons": {
         "path": "~/.openclaw/shared_files/learned_research_lessons.md",
-        "description": "Curated, durable lessons from past research. Read and write."
+        "description": "Agent-curated durable lessons from past research. Weighted by recency and market phase; format documented in the file's own header. Read and write."
     },
     "user research priorities": {
         "path": "~/.openclaw/shared_files/user_research_priorities.md",
-        "description": "User-defined priority topics and standing instructions."
+        "description": "Human-authored priority topics and standing instructions. Write here only when the user gives an explicit standing instruction."
     },
     "logs readme": {
         "path": "~/.openclaw/shared_files/logs/logs_readme.md",

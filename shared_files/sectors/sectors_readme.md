@@ -1,5 +1,7 @@
 # Sectors File Guide
 
+<!-- READ-CHECK: RC-SECRDME-TOP-T8B3 -->
+
 ## Purpose
 
 `sectors.md` stores compact, trading-relevant sector context so the Researcher can understand how broad sector movement may affect stocks within that sector. It should provide information about the current status of the sector and predictions as to how it may move next.
@@ -300,3 +302,5 @@ Before editing `sectors.md`, ask:
 5. Would this be better stored in `daily_market_notes.jsonl`?
 
 Only edit `sectors.md` when it is a durable sector update.
+
+<!-- READ-CHECK: RC-SECRDME-END-W5J1 -->
