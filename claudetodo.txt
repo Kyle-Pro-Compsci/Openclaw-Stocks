@@ -1,0 +1,56 @@
+Notes for AI to check later:
+
+- In stock_profiles.readme.md: 
+ - When you say **What kind of news actually moves it**, what do you mean by "policy headlines barely register, order announcements move it hard"
+ - Does it make sense to say 'history is indexed by stock, the logs are indexed by time'? Isn't history split by stock but still indexed by time? You decide if this phrasing makes sense.
+ - Should we limit the event_type field under trading_history to just certain keywords or should we let the AI come up with a label on its own?
+ - What's level_context?
+ - Important: I thought we didn't want to include likely_cause in the trading_history.jsonl file? Here is your own thinking:
+"Log entries are claims that can only be settled by waiting. "Semis should outperform today." "This move looks unsustainable." No chart of the past resolves those; only the future does.
+
+But the rule breaks on my own schema. I included likely_cause in the history entry — "moved because of the order announcement." That's a causal claim, and a chart can't verify causation. By my rule it would have to go in the logs, which is clearly wrong; it's exactly the kind of thing you want attached to the day.
+
+The better rule is settled vs. pending:
+
+Settled — about a day that has already happened, and won't change with time → history. Includes interpretation, like why it moved and what happened at the level. It's a reading of a closed event.
+Pending — awaiting resolution, only gradeable by what happens next → logs. Views, theses, predictions.
+That's the property that actually matters, and "chart-verifiable" was just a proxy for it that leaks on causal claims."
+
+ - Should the day qualification for trading_history.jsonl be stated that clearly? How much do we leave for interpretation at the moment, with possible fine tuning over time?
+
+
+
+Note to review stock_profile_template.json after a real run or two - see how it performs and what information is still needed and what isn't
+Same for financial_valuation_snapshot_template.json
+
+Reminder for financial_valuation_snapshot_template - the end goal is to deduce or obtain a valuation for the company to see if the company is currently over or undervalued, with the goal to inform long term trading and prospects.
+
+
+For morning_research.md
+ - Inquiry on what is going on with File Responsibility sections? Why the need to essentially restate things? Just explain the intention and use behind them.
+ - References to `daily_market_note` are inconsistent with `daily market notes`
+ - For the sector analysis in sectors.md, and when updating/filling it out during morning_research, what are our thoughts about using specific enums for heat_status? Is this possibly limiting the AI in its ability to analyze heat status by asking it to fill very specific buckets?
+ - When do we hit the case where a sector is not in sectors.md but matters today? Is it based on the news, or if a tracked stock is in an unlisted sector? Let's put more thought into the process that would lead to a new sector being added and filled out. For example, semiconductors is a very important sector right now - would these sectors be tracked manually by a user or inferred by their tracked stocks or inferred by AI researched online discussion and news? Or a mix of all methods?
+ - I kind of like the follow_up_needed: section with the 'and why' part. Are there other parts where this encouraged qualitative thinking could be put in?
+
+For Phase 3 - how much 'effort', thought, or simple tokens does this process take to decide which stocks to select for review? Is there a way to mark in advance 
+
+
+Phase 4 - on the tracked stocks section
+ - Since we primarily just want to look at the stock profile section, let's double check that all the core information is in the stock profile. For example, if the financial_valuation has been filled out then the verdict about it should be present in the profile, and probably should be dated as well.
+ - My instinct tells me that the trading history is almost always essential, especially when providing analysis from personal experience. However, maybe not for research? This is up for discussion. How could trading history be used for research? Maybe checking for recent notable days and seeing if anything could be found related to them? Maybe these very current threads could be put somewhere in the stock_profile to keep reading only 1 file for the research phase (though I'm not sure how this affects the context window and token usage if they will likely be read for the second analysis phase)
+
+Phase 5 - Change detection and write decisions
+In my mind this is phase is like a filter to avoid repeating itself, right? Do you think it could benefit by adding a line stating its purpose?
+So the overall process is to perform all three research tasks on the three different scopes, then classify each researched item into where they would be logged? However, this format makes it seems like these writes are actually happening (asking to classify each candidate update with `no_write` or `sector_update` but isn't this all done in context and no writing is actually happening? Should we temporarily write these to a file or do you think this current system with specific labels being mentally added is fine? Or am I misunderstanding how it works from the start?
+
+Phase 6 - Logging
+This feels a bit unclear as to how it's supposed to act in relation with the previous Phase 5. Should there be a specific instruction asking it to look back at the previous candidate classifications and act accordingly?
+
+Phase 7 - Hand off to analysis
+My original idea was that there would be a research report produced at this stage, essentially a morning news digest. Do you think this is still relevant? Should it all be done together after the analysis stage?
+
+
+
+morning_analysis.md
+ - Haven't read yet
