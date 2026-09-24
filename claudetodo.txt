@@ -1,12 +1,12 @@
 Notes for AI to check later:
 
-- In stock_profiles.readme.md: 
+- In stock_profiles_readme.md: 
  - When you say **What kind of news actually moves it**, what do you mean by "policy headlines barely register, order announcements move it hard"
  - Does it make sense to say 'history is indexed by stock, the logs are indexed by time'? Isn't history split by stock but still indexed by time? You decide if this phrasing makes sense.
  - Should we limit the event_type field under trading_history to just certain keywords or should we let the AI come up with a label on its own?
  - What's level_context?
  - Important: I thought we didn't want to include likely_cause in the trading_history.jsonl file? Here is your own thinking:
-"Log entries are claims that can only be settled by waiting. "Semis should outperform today." "This move looks unsustainable." No chart of the past resolves those; only the future does.
+[Log entries are claims that can only be settled by waiting. "Semis should outperform today." "This move looks unsustainable." No chart of the past resolves those; only the future does.
 
 But the rule breaks on my own schema. I included likely_cause in the history entry — "moved because of the order announcement." That's a causal claim, and a chart can't verify causation. By my rule it would have to go in the logs, which is clearly wrong; it's exactly the kind of thing you want attached to the day.
 
@@ -14,7 +14,7 @@ The better rule is settled vs. pending:
 
 Settled — about a day that has already happened, and won't change with time → history. Includes interpretation, like why it moved and what happened at the level. It's a reading of a closed event.
 Pending — awaiting resolution, only gradeable by what happens next → logs. Views, theses, predictions.
-That's the property that actually matters, and "chart-verifiable" was just a proxy for it that leaks on causal claims."
+That's the property that actually matters, and "chart-verifiable" was just a proxy for it that leaks on causal claims.]
 
  - Should the day qualification for trading_history.jsonl be stated that clearly? How much do we leave for interpretation at the moment, with possible fine tuning over time?
 
@@ -53,4 +53,14 @@ My original idea was that there would be a research report produced at this stag
 
 
 morning_analysis.md
- - Haven't read yet
+My main goals when looking for an analysis:
+ - Predictions on where the overall stock market is going, as well as the focused sectors
+ - Show the reasoning behind such predictions, including learnings from recent events, previous successful/failed analyses, etc
+ -
+Feedback 
+ - In Phase 1, the reference to the macro/geopolitical context should at least also reference how it could possibly affect trading in major or relevant sectors. Obvious current ones are the Strait of Hormuz affecting Oil, instability affecting gold prices, and how the market would be affected.
+     - What does the "A-share regime read;" mean?
+     - Here is a possible alternative take on the macro/geopolitical line: - "the macro/geopolitical context and its likely transmission into A-shares, including direct effects, indirect sector/theme effects, policy/liquidity implications, commodity/rate/FX channels, and any change in risk appetite;" - Compare this to your own and judge which qualities you like from both and what you'd change
+ - In Phase 2, I'm not sure about the use of ranking by conviction but I'll wait to see the results for now.
+ - Phase 3 looks good.
+ - 

@@ -160,18 +160,41 @@ To add:
 - Keep the distinction visible in the entry — an update from reasoning is weaker evidence than one
   from an observed fact, and should be marked as such so it can be revisited.
 
-### 6. Should analysis be a separate program from research?
+### 6. Should analysis be a separate program from research? — RESOLVED
 
-Currently the morning run gathers *and* concludes. The alternative is a `morning_analysis.md`
-chained after `morning_research.md`.
+**Yes.** Split into `morning_research.md` (gathers, records) and `morning_analysis.md` (forms the
+view, logs predictions, writes the report).
 
-**Blocking dependency:** a split only works if both programs run in the **same session**, or if the
-research program persists enough state for the analysis to reconstruct. If a second cron fires a
-fresh session, the analysis program would have to rebuild the whole morning's context from
-`daily_market_notes.jsonl` — expensive and lossy. Resolve the cron session-semantics question in
-`../CLAUDE.md` first.
+The blocking dependency turned out to be a false one. It assumed a split meant *two cron jobs*, and
+therefore two sessions with state to pass between them. It does not: **one cron prompt reads both
+files in sequence**, so they share a session and the research findings are still in context when the
+analysis file is read. State-passing cost is zero, exactly as in the combined version.
 
-Decision for now: analysis stays as a phase inside `morning_research.md`, where the research is
-already in context and the state-passing cost is zero. Revisit once session semantics are known —
-note that the `weekly_research.md` baseline-storage question depends on the same answer, so the two
-should be decided together.
+The split is worth having because it matches the settled/pending line used throughout the system —
+research records what happened, analysis decides what comes next — and it keeps `prediction log`
+writes confined to one program.
+
+Note the `weekly_research.md` baseline-storage question does **not** share this answer after all.
+That one spans *different days*, so it genuinely needs persisted state and remains open.
+
+### 7. Stop tracking agent-written data in git — once operational
+
+The researcher writes to git-tracked files during normal operation: `logs/*.jsonl`, `sectors.md`,
+and `stock_profiles/<code>/`. Deployment is a `git pull` onto the OpenClaw workstation, so after the
+system runs, that machine carries local modifications to tracked files and a later pull can conflict
+— most often on the append-only logs, where both sides appended different lines.
+
+Target state: git carries only **schemas, templates, playbooks, programs, and seeds**. Agent-written
+data lives on a gitignored path.
+
+**Not yet** — while the system is being built, having the data in git is useful: it makes the
+agent's output reviewable from the authoring machine and gives history for free. The conflict risk
+is near zero until it is actually running daily.
+
+Do this once the morning run is operating on a schedule. When doing it:
+
+- decide whether existing logged data should be preserved or discarded at the cut-over;
+- keep an empty seed or `.gitkeep` for each path so the structure still deploys;
+- check nothing in `paths.json` assumes the files are present in a fresh checkout;
+- until then, if a pull conflicts on a log, **keep both sides' lines in timestamp order** — never
+  resolve by taking one side, since append-only means both are real.

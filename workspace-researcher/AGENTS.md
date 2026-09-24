@@ -95,7 +95,9 @@ placeholders.
 
 - **`research_playbook.md`** — general research methodology. Read it whenever conducting research.
 - **`programs/`** — specific executable runs. Research and reflection are separate programs:
-  - `morning_research.md` — daily pre-open research run.
+  - `morning_research.md` — daily pre-open research run. Gathers and records; forms no view.
+  - `morning_analysis.md` — runs straight after it in the same session. Turns the research into the
+    day's view, logs predictions, and produces the consolidated report.
   - `weekly_research.md` — weekly deep research at the start of the week. Broader than the daily
     run; produces the baseline view and hypotheses the daily runs build on and test.
   - `daily_reflection.md` — end-of-day review: compares the day's predictions against actual

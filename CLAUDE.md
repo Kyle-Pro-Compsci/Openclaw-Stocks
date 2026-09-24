@@ -6,13 +6,15 @@ scores predictions against outcomes.
 
 ## What this repo is
 
-This is the **editable mirror** of an OpenClaw install whose live root is `~/.openclaw/`.
-Nothing executes from `e:\Code\Openclaw-Stocks`. Deploying means copying `workspace/`,
-`workspace-researcher/`, and `shared_files/` into `~/.openclaw/`.
+This repo holds the editable parts of an OpenClaw install whose live root is `~/.openclaw/`.
+Nothing executes from this checkout — it is the authoring copy. **Deployment is a `git pull` on the
+OpenClaw workstation**, where the repo root sits at `~/.openclaw/`. See *Deployment* below,
+including the caveat that the agent writes to git-tracked files.
 
-`.gitignore` allows only those three trees plus `.clinerules.md`, which is why the OpenClaw doc
-mirror (`.openclaw/reference/docs.openclaw.ai/`) and `openclaw.json` are not present here. Do not
-assume runtime behavior that can only be confirmed in those files — see *Unverified* below.
+`.gitignore` allows only `workspace/`, `workspace-researcher/`, `shared_files/`, and
+`.clinerules.md` — the live root also holds `reference/` (the OpenClaw doc mirror), `openclaw.json`,
+and credentials, which must never be committed. That is why those files are not visible here: do not
+assume runtime behavior that can only be confirmed in them — see *Unverified* below.
 
 ## The two agents
 
@@ -76,6 +78,7 @@ Keeping these separate is a core design goal. Never merge them.
 | Agent identity, hard constraints, shared-file protocol | `workspace-researcher/AGENTS.md` |
 | General research methodology | `workspace-researcher/research_playbook.md` |
 | Daily morning research execution order | `workspace-researcher/programs/morning_research.md` |
+| Daily morning view, predictions, and report | `workspace-researcher/programs/morning_analysis.md` |
 | Weekly baseline research run (outline only) | `workspace-researcher/programs/weekly_research.md` |
 | End-of-day outcome review | `workspace-researcher/programs/daily_reflection.md` |
 | Weekly self-improvement / lesson curation | `workspace-researcher/programs/weekly_reflection.md` |
@@ -126,6 +129,7 @@ cannot.
 | `RC-AGENTS-R4W9` | `workspace-researcher/AGENTS.md` | bottom |
 | `RC-PLAYBOOK-K7X2` | `workspace-researcher/research_playbook.md` | bottom |
 | `RC-MORNING-N4T7` | `workspace-researcher/programs/morning_research.md` | bottom |
+| `RC-ANALYSIS-V7H2` | `workspace-researcher/programs/morning_analysis.md` | bottom |
 | `RC-SOURCE-M4Q9` | `shared_files/source_guide.md` | bottom |
 | `RC-LOGS-H9V4` | `shared_files/logs/logs_readme.md` | bottom |
 | `RC-TRACKED-Z3D7` | `shared_files/tracked_stocks/tracked_stocks_readme.md` | bottom |
@@ -174,7 +178,8 @@ remove the *Read-check tokens* section from `research_playbook.md` and this sect
 
 Scaffolded, not yet run. The immediate goal is the first end-to-end morning research run.
 
-- **Working toward first run:** `programs/morning_research.md` (pre-open daily program)
+- **Working toward first run:** `programs/morning_research.md` + `programs/morning_analysis.md` —
+  the pre-open pair. Research gathers, analysis concludes; one cron runs both in sequence.
 - **Written, not yet exercised:** `programs/weekly_reflection.md` (weekly review + the lesson
   curation rules for `learned_research_lessons.md`)
 - **Outline only:** `programs/weekly_research.md` (weekly baseline run — marked WIP, has open
@@ -185,6 +190,71 @@ Scaffolded, not yet run. The immediate goal is the first end-to-end morning rese
   Until it has entries, the morning run's stock phases are no-ops and only the macro/sector half
   does work.
 - **Seeded skeletons:** `sectors.md` has entries whose fields are `TODO` pending the first run.
+
+## The morning cron job
+
+**Not yet created** — do a supervised manual run first (see below).
+
+The prompt is deliberately thin. All methodology lives in the files; a fat cron prompt would become
+a fourth place where rules live and drift out of sync.
+
+> Run the morning research program. Read `programs/morning_research.md` in your workspace and
+> execute it in order, then read `programs/morning_analysis.md` and execute that. Resolve all shared
+> files through `~/.openclaw/shared_files/paths.json`. Do not skip phases. If a required file is
+> missing or a source is blocked, say so explicitly rather than filling the gap. End with the single
+> consolidated report from the analysis program, followed by the read-check token list.
+
+**Both files in one prompt, deliberately.** They must share a session — the analysis run works from
+the research findings held in context. Splitting them into two cron jobs would force the analysis to
+reconstruct state from the logs, which is both lossy and expensive.
+
+**Timing:** pre-open, Asia/Shanghai (GMT+8). Roughly 07:30–08:30, finishing before the 09:15
+auction. Leave enough margin that a slow search does not push the report past the open.
+
+## Deployment
+
+Deployment is a `git pull` on the OpenClaw workstation, where this repo's root sits at
+`~/.openclaw/`. That is also why `.gitignore` excludes everything except `workspace/`,
+`workspace-researcher/`, `shared_files/`, and `.clinerules.md` — the live root holds
+`reference/`, `openclaw.json`, and credentials that must never be committed.
+
+### ⚠ The agent writes to git-tracked files
+
+This is the thing most likely to bite. The researcher writes to `shared_files/` during normal
+operation — `logs/*.jsonl`, `sectors.md`, and `stock_profiles/<code>/`. All of those are tracked.
+
+Consequences to watch for:
+
+- **A pull can conflict with agent-written data.** After the system has run, the deploy machine has
+  local modifications. `git pull` may refuse or conflict — most likely on the append-only logs,
+  where both sides have appended different lines. Commit or stash the agent's output before pulling.
+- **Agent output is invisible here until committed and pushed** from the deploy machine. Reviewing a
+  run's logs or reflections from this PC requires that round trip.
+- **Never resolve a log conflict by taking one side.** They are append-only; both sets of lines are
+  real. Keep both and keep them in timestamp order.
+- Worth deciding early whether agent-written data should be tracked at all, or moved to a gitignored
+  path with only the schemas and seeds in git. Tracking it gives history and cross-machine review;
+  not tracking it removes this whole class of conflict.
+
+### First-run checklist
+
+1. **Pull** onto the OpenClaw workstation.
+2. **Check paths resolve** — confirm `~` expands as expected on that machine and that a few
+   `paths.json` keys point at files that actually exist.
+3. **Consider hiding `CLAUDE.md`** from the agent — it carries the read-check token registry, which
+   the agent could echo without opening anything (see the warning above).
+4. **Add stocks** to `tracked_stocks.json`, which is `{}` today. Until it has entries the stock
+   phases do nothing and only the macro/sector half of the run does work. Schema is in
+   `tracked_stocks_readme.md`.
+5. **Run manually once** with the cron prompt above, and check:
+   - every `paths.json` key resolved, and nothing was read that no phase called for;
+   - appended JSONL validates against `logs_readme.md`;
+   - any new `sectors.md` entry matches the readme's format, with no stock-specific detail in it;
+   - the report separates facts / interpretation / prediction / uncertainty, and actually commits to
+     a view rather than only describing;
+   - the read-check list shows the files you expected — especially **both** `RC-SECRDME-TOP-T8B3`
+     and `RC-SECRDME-END-W5J1`, since TOP without END means a truncated read.
+6. **Then** create the cron job, once the agent name/id below is known.
 
 ## Unverified OpenClaw behavior
 
