@@ -198,3 +198,69 @@ Do this once the morning run is operating on a schedule. When doing it:
 - check nothing in `paths.json` assumes the files are present in a fresh checkout;
 - until then, if a pull conflicts on a log, **keep both sides' lines in timestamp order** — never
   resolve by taking one side, since append-only means both are real.
+
+### 8. Drift cleanup — files that no longer agree with each other
+
+Found during the 2026-09-25 handover review. Each is a small fix; do them in one pass.
+
+- `research_playbook.md` → *Stock research* still refers to a "market behavior profile". That
+  template was removed; its job is now done by `how_it_trades` in `stock_profile.json` plus
+  `trading_history.jsonl`.
+- `research_playbook.md` → *Stock research* names `refresh_triggers` and `next_suggested_refresh`
+  as profile fields. `stock_profile.json` actually has `stock_specific_refresh_triggers` and no
+  refresh date; only the financial snapshot has `refresh_control.next_suggested_refresh`.
+- `research_playbook.md` → *Methodology* step 5 says to start from the latest weekly baseline. No
+  baseline exists yet, and `morning_research.md` never mentions one.
+- `morning_research.md` Phase 2 says its classification uses the vocabularies in `sectors readme`,
+  but `view_change` and `follow_up_needed` are not defined there.
+- `morning_research.md` uses `daily_market_note` as a write label and `daily market notes` as the
+  file key. Pick one form.
+- `sectors_readme.md`: `move_quality` lists both `unclear` and `unsure`; *Bloat control* mentions a
+  "Recent changes" section that is not in the entry format; the optional *Review triggers* section
+  is not in the format template, although `sectors.md` includes it.
+- `logs_readme.md`: says the logs live in `shared/`; describes `prediction_log` as holding "a stock
+  prediction or research note" (it is predictions only, of any target type); the
+  `daily_market_notes` example is missing `open_question`; the `id` format is only implied by the
+  examples.
+- `stock_profiles_readme.md` → *History vs. the shared logs* says views go in `daily market notes`,
+  but `morning_research.md` treats that log as observations only.
+- Open Review Item 3 above (staleness policy) is now mostly answered by
+  `stock_profiles_readme.md` → *Staleness*. Check what is left, then close it.
+
+### 9. Log schema gaps to fix before the first run
+
+The logs are append-only, so entries written with a flawed schema cannot be corrected later.
+
+- **Timezone.** Timestamps are UTC, but a 07:30 Shanghai run is 23:30 UTC on the *previous* day.
+  IDs, timestamps, and the trading day will disagree. Add a `trading_date` (Shanghai calendar
+  date) to every log, or switch timestamps to `+08:00`.
+- **Prediction target day.** A horizon of `"open"` does not say which day's open. `trading_date`
+  fixes this too.
+- **ID scheme.** State the format and how to pick the next sequence number.
+- **Outcome verdict.** `market_outcomes` has no hit / miss / partial field, so scoring would depend
+  on reading free-text `notes`. Decide before `daily_reflection.md` is written.
+
+### 10. When should `trading_history.jsonl` entries be written?
+
+An entry needs `follow_through`, which is only visible a day or two later, so it cannot be written
+on the day itself. Nothing currently makes the later write happen: the morning run notices a
+notable day, the session ends, and the day is forgotten.
+
+Candidates, to brainstorm (user, pending):
+
+- the end-of-day review (`daily_reflection.md`) notes the day, and a later one writes the entry;
+- a morning run writes it once follow-through is visible, picked up via an `open_question` in
+  `daily market notes`;
+- a weekly pass writes all of the week's pending entries at once.
+
+### 11. Watch during early runs
+
+Fields and thresholds set by judgment, not evidence. Check each against real output after the first
+few weeks.
+
+- **`likely_cause` hit rate** in `trading_history.jsonl`. How often is a cause actually sourced
+  rather than guessed or `unknown`? Expectation is low for daily moves.
+- **Qualifying-day guide** in `stock_profiles_readme.md` — the 70%-of-daily-limit threshold, and
+  whether the agent records too many days or too few.
+- **`event_types: other`** — if the `other` entries keep describing the same kind of day, add it
+  to the list.

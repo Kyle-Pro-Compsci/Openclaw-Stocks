@@ -95,17 +95,29 @@ ones** — behavior from many months ago is usually irrelevant to how the stock 
 | Field | Description |
 |---|---|
 | `date` | `YYYY-MM-DD` |
-| `event_type` | `limit_up`, `limit_down`, `gap`, `breakout`, `breakdown`, `reversal`, `turnover_spike`, `divergence` |
+| `event_types` | One or more of: `limit_up`, `limit_down`, `gap`, `breakout`, `breakdown`, `reversal`, `turnover_spike`, `divergence`. If none fits, use `other` and describe the day in `note` |
 | `price_move` | The day's move, e.g. `"+9.98%"` |
-| `level_context` | Which level was in play, if any — prior high, prior low, gap fill |
+| `level_context` | The price level the stock was testing that day, and what it did there — e.g. "reached the March high of ¥18.40, closed below it". `null` if no known level was in play |
 | `volume_note` | How turnover compared with its own recent norm |
 | `sector_context` | What the sector did that day — did it lead, follow, or diverge? |
 | `likely_cause` | The catalyst, if identifiable. `unknown` is acceptable |
 | `follow_through` | What the price did over the next day or two — held, faded, continued |
 | `note` | Anything else worth remembering |
 
-A day qualifies on a large move (roughly ±7%, or limit-up/limit-down), a turnover jump well above
-its recent norm, a breakout or breakdown of a known level, or a sharp divergence from its sector.
+**Does this day qualify?** Record a day if it tells you something about how this stock trades: how
+it reacts at a price level, what kind of news moves it, or whether its big moves hold.
+
+As a starting guide, these days usually qualify:
+
+- a move of roughly 70% of the stock's daily limit or more (about 7% on the main board, 14% on
+  ChiNext/STAR), or a limit-up / limit-down;
+- turnover well above its recent norm;
+- a break above or below a known level;
+- a sharp divergence from its sector.
+
+These guides are not a gate, and will be tuned after real runs. Record a day that meets none of
+them if you judge it notable, and say why in `note`. Skip a day that meets one but tells you nothing
+about this stock — for example, a move that simply matched the whole market's.
 
 **Write the entry a few days after the fact.** `follow_through` cannot be known on the day itself,
 and the file is append-only, so waiting until follow-through is visible avoids editing entries

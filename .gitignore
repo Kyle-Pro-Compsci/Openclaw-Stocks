@@ -10,7 +10,9 @@
 !shared_files/**
 !.clinerules.md
 !CLAUDE.md
+
 !claudetodo.txt
+!tempclaudeprompt.txt
 
 # Keep the .gitignore itself tracked
 !.gitignore

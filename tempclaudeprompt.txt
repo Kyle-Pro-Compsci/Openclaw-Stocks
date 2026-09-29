@@ -1,0 +1,13 @@
+(I'm not responding to the Decisions for you section since I saw it too late, but your numbered responses)
+The plan for item 1. about what moves a stock looks good to me.
+One more reminder that's in my mind when looking at this is again to include a step where the AI's free thinking is used outside of this somewhat strict system that we are building. I want to make sure I'm utilizing the full possibility of an AI's potential to think on its own.
+
+For item 2: The plan we have now sounds good. And yes morning_analysis should be given permission to write view notes. After all we expect a lot of writing in this section, as all predictions will happen at this point right?
+
+* One small concern that's coming to mind now - How will it actually look to read how the market went for the day? It's likely to be one single run after market close, though I guess we could also consider a midday break run too (probably to be done later). How will the data be ingested? What form will the data be, like will it be a really complicated table? An image of the trading candles to be ingested? Will the form be such that an LLM is actually able to output something useful and actually 'comprehend' (to the extent that an LLM can) the data?
+
+
+For item 5: Plan looks good to me.
+
+For item 8: This trigger change makes sense to me, though I want to double check - there is a time based refresh trigger too right? Like a check is to see the difference between a supposed last-updated date field and the current date.
+I also agree that it's better to change/rewrite section by section rather than line by line. Just try not to change anything too significantly unless you see a major issue and inform me first, so I can keep track of the logic of the whole program.
