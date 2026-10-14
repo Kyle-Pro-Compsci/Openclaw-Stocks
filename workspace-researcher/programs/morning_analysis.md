@@ -14,7 +14,8 @@ research pass.
 `morning_research.md` established **what happened**. This program decides **what it means and what
 comes next** — the settled/pending line used throughout this system.
 
-That makes this the run that writes to `prediction log`. The research run does not.
+That makes this the run that writes to `prediction log`, and the run that writes `view` notes to
+`daily market notes`. The research run does neither.
 
 If a genuine gap appears — a claim the stance depends on that was never verified — do a targeted
 check rather than a general scan, and say in the report that it was needed. A pattern of these means
@@ -58,17 +59,21 @@ day rather than only judged afterwards.
 **Abstaining is a valid outcome.** If the evidence is thin, say "no clear directional view today,
 and here is what would create one". Do not manufacture a call to fill the section.
 
-## Phase 3: Log predictions
+## Phase 3: Log predictions and views
 
-Only stances specific and falsifiable enough to be scored later go in `prediction log`. Follow
-`logs readme` for the schema.
+Read `logs readme` before appending — it holds the schema for both logs.
 
-A logged prediction needs a target, a horizon, an expected move or scenario, the thesis and
-evidence, a confidence, an invalidation condition, and what to check later.
+For each stance from Phase 2, decide where it goes — once, in this order:
 
-Views too broad to score still belong in the report — label them as **views**, not logged
-predictions. The distinction matters: the reflection loop scores the log, so anything unscoreable
-sitting in it will quietly distort the accuracy record.
+1. Does it name a target, a horizon, an expected move, and what would prove it wrong? → append it
+   to `prediction log`, with the thesis, evidence, confidence, and what to check later.
+2. Otherwise → append it to `daily market notes` with `kind: view`.
+
+Every stance goes to exactly one of the two, and also appears in the report labelled
+**prediction** or **view**.
+
+The line matters because the reflection loop scores `prediction log`: one unscoreable entry in it
+distorts the accuracy record. Views are still kept, so the thinking behind them can be reviewed.
 
 Do not force a prediction from weak evidence. Zero logged predictions on a quiet day is a correct
 outcome, not a failed run.

@@ -25,8 +25,9 @@ immediately after this program in the same session, with this run's findings sti
 The dividing line is the same one used elsewhere in this system: **settled vs. pending.** What has
 already happened is research. What will happen is analysis.
 
-So this program writes observations — `daily market notes`, sector updates, profile updates. It does
-**not** write to `prediction log`; that belongs to the analysis run.
+So this program writes observations — `daily market notes` with `kind: observation`, sector updates,
+profile updates. It does **not** write to `prediction log` or write `view` notes; those belong to the
+analysis run.
 
 ## Output
 

@@ -23,7 +23,7 @@
     "main_drivers": [],
     "sensitive_to": [],
     "not_sensitive_to": [],
-    "_note": "Causal drivers - policy, orders, theme, commodity. What makes this stock move at all."
+    "_note": "Causal drivers - policy, orders, theme, commodity. What makes this stock move at all. Start each claim with [research] or [observed: <history entry dates>] - see 'Checking what moves the stock' in stock_profiles_readme.md."
   },
 
   "real_or_proxy": {
@@ -56,7 +56,7 @@
   "news_filter": {
     "matters": [],
     "ignore_unless_confirmed": [],
-    "_note": "Which information is worth reacting to. The daily noise filter."
+    "_note": "Which information is worth reacting to. The daily noise filter. Start each claim with [research] or [observed: <history entry dates>], as in why_it_moves."
   },
 
   "current_narrative": {

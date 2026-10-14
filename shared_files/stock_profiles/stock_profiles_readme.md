@@ -60,8 +60,10 @@ What you get back from it:
    very different futures from the same price.
 3. **Whether moves stick** — does a big up-day hold or give it back? In A-shares that is the
    difference between chasing a move and fading it.
-4. **What kind of news actually moves it** — qualitatively. "Policy headlines barely register, order
-   announcements move it hard" is established by a handful of entries and is directly useful.
+4. **Which kinds of news move it.** For example, a stock might barely react to broad industry policy
+   announcements but jump sharply on its own contract wins. A handful of entries with `likely_cause`
+   filled in is enough to see this. Record the conclusion in the profile's `news_filter` and
+   `why_it_moves`; the history entries are the evidence for it.
 5. **Whether it still behaves as the profile claims** — the profile's personality verdict is derived
    from these entries. When the stock changes character it shows here first, and that is the signal
    the profile has gone stale.
@@ -72,20 +74,20 @@ those from actual market data.
 
 ### History vs. the shared logs
 
-Both record things that happened, but they are reached by different questions: **history is indexed
-by stock, the logs are indexed by time.** "What has this stock done at ¥18 before?" is history.
-"What did we think last Tuesday, and were we right?" is the logs.
+Both are records kept in date order. They differ in scope:
 
-The content rule is **settled vs. pending**:
+- `trading_history.jsonl` covers **one stock's price action**: notable days, what happened at key
+  levels, whether moves held. It answers questions like "what has this stock done around ¥18
+  before?"
+- The shared logs cover **the whole market and the system's own thinking**. They answer questions
+  like "what did we think last Tuesday, and were we right?"
 
-- **Settled** — about a day that has already happened and will not change → history. This includes
-  interpretation: what happened at the level, the likely cause, whether it followed through. Reading
-  the tape is part of the record.
-- **Pending** — only gradeable by what happens next → the logs. Views, theses, predictions.
+**Only things about days that are over go in the history.** Interpretation is allowed — the likely
+cause, what happened at the level, whether it followed through. Anything about the future is not.
 
-So a judgment *of the day* belongs in history; a judgment *about the future* does not. "Broke the
-March high on heavy volume and held" is history. "This is set up to run" is a view, and belongs in
-`daily market notes` or `prediction log` where it can be scored.
+"Broke the March high on heavy volume and held" belongs in the history. "This is set up to run" is a
+view about the future: log it in `prediction log` if it is specific enough to score, otherwise in
+`daily market notes` as a `view` note (see `logs readme`).
 
 ### `trading_history.jsonl` entry format
 
@@ -100,7 +102,8 @@ ones** — behavior from many months ago is usually irrelevant to how the stock 
 | `level_context` | The price level the stock was testing that day, and what it did there — e.g. "reached the March high of ¥18.40, closed below it". `null` if no known level was in play |
 | `volume_note` | How turnover compared with its own recent norm |
 | `sector_context` | What the sector did that day — did it lead, follow, or diverge? |
-| `likely_cause` | The catalyst, if identifiable. `unknown` is acceptable |
+| `likely_cause` | The catalyst, in a sentence, with its source and date where there is one. `unknown` is acceptable — a guessed cause will later be treated as fact |
+| `cause_basis` | How the cause was established: `sourced` (a dated source, published before the move), `sector` (moved with its sector or theme), `inferred` (plausible, but no direct source), or `unknown` |
 | `follow_through` | What the price did over the next day or two — held, faded, continued |
 | `note` | Anything else worth remembering |
 
@@ -127,7 +130,8 @@ later. History is never time-critical.
 
 1. Create the folder using the bare code.
 2. Copy the three templates in, keeping every field.
-3. Fill what the research actually established; leave the rest `unknown`.
+3. Fill what the research actually established; leave the rest `unknown`. Label starting
+   hypotheses about what moves the stock `[research]` (see *Checking what moves the stock*).
 4. Set `created_at` and the `last_updated` / `as_of` fields.
 5. List what is still unfilled in `sections_needing_refresh`.
 
@@ -164,16 +168,21 @@ These apply to **every** stock and do not need restating per file. Refresh regar
 Each file's `refresh_triggers` list is for **exceptions only** — a trigger genuinely specific to
 that stock ("reacts to 光伏 tariff announcements"). Do not copy the standard list into it.
 
-### How triggers actually get checked
+### How triggers get checked
 
-A trigger is a **checklist applied in reverse**, not a detector. The news that fires it is found
-during the macro/sector phases, long before any profile is opened; by the time a stock is being
-reviewed, that news is already known, and the question is "did anything today match?"
+Nothing watches for triggers automatically. A trigger is only noticed when a run finds the news that
+fires it and then compares that news with the stock's profile:
 
-This means the burden sits on **selection**, not on the profile: a stock never selected for review
-never gets its triggers checked. The morning program must select stocks whose sector, industry, or
-tags were touched by the day's news — which it can do from `tracked_stocks.json` alone, without
-opening any profile.
+1. **Find the news.** Market and sector news comes from the macro and sector phases of the morning
+   run. Company-specific news — reports, announcements, 减持 — has to be looked up for each tracked
+   stock.
+2. **Match it.** When a stock's profile is opened, check whether any news found today matches a
+   standard trigger or one of the stock's own. If one does, refresh that section, or add it to
+   `sections_needing_refresh`.
+
+A stock that is never selected for review never reaches step 2. That is why the morning run must
+select every stock whose sector, industry, or tags were touched by the day's news. It can do that
+from `tracked_stocks.json` alone, without opening any profile.
 
 If a file is stale and there is no time to refresh it, say the data is stale, add the section to
 `sections_needing_refresh`, and do not present old figures as current.
@@ -185,6 +194,25 @@ If a file is stale and there is no time to refresh it, say the data is stale, ad
 - When a heavy file changes, update its summary in `stock_profile.json` so the cover page does not
   contradict the file beneath it.
 - Append to `change_log` when a view materially changes, so the reasoning stays recoverable.
+
+## Checking what moves the stock
+
+`why_it_moves`, `news_filter`, and `how_it_trades` are hypotheses. Label each claim with where it
+came from, so a guess is never mistaken for an established pattern:
+
+- `[research]` — from what the company does, its 概念板块 (concept boards), or commentary. Used to
+  seed a new profile. Treat it as a hypothesis until trading confirms it.
+- `[observed: <dates>]` — supported by the `trading_history.jsonl` entries on those dates, e.g.
+  `[observed: 2026-09-03, 2026-09-17, 2026-10-02] Jumps on its own contract announcements`. List the
+  dates rather than a count, so every claim can be traced back to its entries.
+
+At each refresh of the behavior fields (every 2–4 weeks, see *Staleness*):
+
+1. Re-read the history entries added since the last refresh.
+2. Group them by cause. Count only `cause_basis: sourced` entries as strong evidence.
+3. Update `why_it_moves`, `news_filter`, and `how_it_trades`, with the new labels. Upgrade
+   `[research]` claims the record supports; drop claims it contradicts or has stopped supporting.
+4. Note in `change_log` what changed and why.
 
 ## Seeding history for a new stock
 

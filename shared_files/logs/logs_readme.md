@@ -106,11 +106,18 @@ Each line represents a daily macro, news, or sector observation. Used for the da
 | id | string | Unique identifier for this note |
 | timestamp | string | ISO 8601 UTC time |
 | type | string | One of: "macro", "sector", "stock", "policy", "sentiment", "summary" |
+| kind | string | `observation` — what happened or was found, including your reading of it. `view` — what you think will happen, when it is too broad to score as a prediction. `morning_research.md` writes observations; `morning_analysis.md` writes views |
 | subject | string | Topic or ticker, e.g., "US futures", "semiconductors", "600519" |
 | content | string | Concise observation or summary |
 | sources | array | Optional list of source names/URLs |
 | open_question | string \| null | What this note leaves unresolved — e.g. "confirm whether the order announcement is officially disclosed". `null` when the note is self-contained |
 | linked_prediction_id | string \| null | Related prediction, if any |
+
+**On `kind: view`:** a view is a judgment about the future that has no specific target, timeframe,
+or threshold — "this semis rally feels late", "money seems to be rotating toward defensives". It
+cannot be scored like a prediction, but it is still thinking worth keeping: `weekly_reflection.md`
+can judge how views aged, and a view that keeps proving right should become a proper prediction.
+If a view *can* be made specific enough to score, log it in `prediction log` instead.
 
 **On `open_question`:** this is what makes the log a working queue rather than a write-only
 archive. A thread raised on Monday cannot resurface on Tuesday unless it is marked. Phase 0 of the
@@ -137,9 +144,11 @@ the *price* did after a notable day.
   "id": "note-20250617-001",
   "timestamp": "2025-06-17T09:00:00Z",
   "type": "macro",
+  "kind": "observation",
   "subject": "US futures",
   "content": "S&P 500 futures +0.4% pre-market on tech earnings beat",
   "sources": ["Bloomberg"],
+  "open_question": null,
   "linked_prediction_id": null
 }
 ```

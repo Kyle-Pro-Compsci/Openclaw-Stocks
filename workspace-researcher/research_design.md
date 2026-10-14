@@ -219,11 +219,11 @@ Found during the 2026-09-25 handover review. Each is a small fix; do them in one
   "Recent changes" section that is not in the entry format; the optional *Review triggers* section
   is not in the format template, although `sectors.md` includes it.
 - `logs_readme.md`: says the logs live in `shared/`; describes `prediction_log` as holding "a stock
-  prediction or research note" (it is predictions only, of any target type); the
-  `daily_market_notes` example is missing `open_question`; the `id` format is only implied by the
-  examples.
-- `stock_profiles_readme.md` → *History vs. the shared logs* says views go in `daily market notes`,
-  but `morning_research.md` treats that log as observations only.
+  prediction or research note" (it is predictions only, of any target type); the `id` format is
+  only implied by the examples.
+- `stock_profiles_readme.md` → *How triggers get checked* now says company-specific news must be
+  looked up for each tracked stock, but `morning_research.md` Phase 3 has no step that does this.
+  Add a per-stock announcement check (cninfo or search) when reviewing that program.
 - Open Review Item 3 above (staleness policy) is now mostly answered by
   `stock_profiles_readme.md` → *Staleness*. Check what is left, then close it.
 
@@ -258,9 +258,92 @@ Candidates, to brainstorm (user, pending):
 Fields and thresholds set by judgment, not evidence. Check each against real output after the first
 few weeks.
 
-- **`likely_cause` hit rate** in `trading_history.jsonl`. How often is a cause actually sourced
-  rather than guessed or `unknown`? Expectation is low for daily moves.
+- **`likely_cause` hit rate** in `trading_history.jsonl`. Count entries by `cause_basis`. How often
+  is a cause `sourced` rather than `inferred` or `unknown`? Expectation is low for daily moves.
 - **Qualifying-day guide** in `stock_profiles_readme.md` — the 70%-of-daily-limit threshold, and
   whether the agent records too many days or too few.
 - **`event_types: other`** — if the `other` entries keep describing the same kind of day, add it
   to the list.
+
+### 12. Design pass: run schedule, and which checks happen in which run
+
+Many rules say *when* something should happen — refresh a profile every 2–4 weeks, write a history
+entry once follow-through is visible, re-check valuation monthly — but there is no plan for *which
+run* does each. Design the run schedule first, then assign each timed task to a run.
+
+Known or likely runs: morning (pre-open, daily), end-of-day review (`daily_reflection.md`), weekly
+research, weekly reflection, and possibly a midday run during the lunch break.
+
+Questions to settle:
+
+- **Event checks vs. time checks.** Event triggers (a new report, a 减持 filing) are found in that
+  day's news and must be handled daily. Time-based checks (is this profile overdue?) are not
+  urgent. Proposal: the daily run handles events only, and a weekly run handles everything
+  time-based.
+- **One weekly run or two?** Does a weekly run both find what is due *and* do it, or does it list
+  what is due and leave the work to the next runs? Or does it all go in the end-of-week run?
+- **Where each timed task goes**, including: profile behavior refresh and consolidation
+  (`stock_profiles_readme.md` → *Checking what moves the stock*), financial snapshot refresh,
+  pending `trading_history` entries (Item 10), and weekly lesson curation. Note that the behavior
+  refresh is the only step that turns `[research]` claims into `[observed]` ones, and no program
+  runs it yet.
+- **Date fields.** The financial snapshot stores a *next* refresh date; `stock_profile.json`
+  stores only *last reviewed* dates and relies on the readme's cadence. Pick one approach for all
+  files.
+- **Selecting stale stocks** without opening every profile: is a date in `tracked_stocks.json`
+  worth the duplication, or is opening each cover page weekly cheap enough?
+
+### 13. Market data ingestion — likely an OpenClaw skill
+
+The end-of-day review needs actual results (index closes, sector rankings, each tracked stock's
+price and turnover), and so does seeding `trading_history.jsonl`. How that data reaches the agent
+decides what the review can do.
+
+- An LLM reads a **short text digest of pre-computed numbers** well. It handles large raw tables
+  poorly (arithmetic over many rows) and chart images unreliably (exact levels).
+- So: a script fetches the data (e.g. AKShare for A-shares), computes the comparisons (% change,
+  relative to index, turnover vs. its recent average), and hands the agent a digest of about 20
+  lines. An OpenClaw skill is the right container for this.
+- **Per the OpenClaw docs** (docs.openclaw.ai/tools/skills, checked 2026-10-13): a skill is a folder
+  with a `SKILL.md` of instructions, and can bundle supporting scripts. Scripts run through the
+  agent's `exec` tool. So Python works, provided two things hold on the workstation — **still to
+  check there:**
+  1. `exec` is enabled for the researcher agent (set in `openclaw.json`);
+  2. Python and the data library are installed — inside the sandbox container if the agent runs
+     sandboxed, not just on the host.
+- Then run a simple test: ask the agent in a manual session to fetch today's 上证指数 close, a
+  sector ranking, and 60 days of one stock's daily prices.
+- Prediction horizons must match the data available. If only daily closes can be fetched,
+  `morning_session` predictions cannot be scored without a midday run.
+
+### 14. A free-form thinking step in each program
+
+The user wants the agent's own thinking used outside the fixed structure, not only within it.
+`research_playbook.md` → *Self Thinking* allows it in general terms, with a `[self-directed]` tag,
+but no program gives it a dedicated step. To propose: one explicit free-form step per program,
+how its output is recorded, and how `weekly_reflection.md` compares it with the scripted output.
+
+### 15. Full clarity rewrite of the guidance files
+
+Much of the guidance was written by an earlier session in compressed, aphoristic wording ("a
+checklist applied in reverse"). Line-by-line patches risk keeping logic nobody actually holds, so
+rewrite each file section by section instead.
+
+**When:** after the run-timing design pass (Item 12), since that may move sections between files.
+Files already reviewed with the user can be done first; `stock_profiles_readme.md` is one.
+
+**How, per section:**
+
+1. State the section's purpose in one plain sentence.
+2. Keep only the rules that serve that purpose. Rewrite each one plainly, with an example where it
+   helps.
+3. **Do not change the logic.** If a section's logic looks wrong, flag it to the user and agree on
+   the fix before rewriting — the user needs to keep track of how the whole system fits together.
+4. Replace vague pointers ("X explains this", "see X") with either an explicit instruction saying
+   when to read the file, or a one-line summary inline, with the full rule left in its home file.
+   A pointer loads nothing by itself; the agent has to decide to open the file.
+5. Show the user each file's diff before moving on to the next.
+
+**Order:** the files the morning run reads first — `stock_profiles_readme.md`,
+`morning_research.md`, `morning_analysis.md`, `logs_readme.md`, `sectors_readme.md`,
+`research_playbook.md` — then the rest.
