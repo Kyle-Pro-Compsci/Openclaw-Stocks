@@ -81,6 +81,6 @@
 
   "digest_for_stock_profile": {
     "summary": "",
-    "_note": "One or two lines, copied into financial_digest in stock_profile.json whenever this file changes, so the cover page never contradicts the file beneath it."
+    "_note": "One or two lines, copied into financial_digest in stock_profile.json whenever this file changes, together with valuation.status and snapshot_meta.as_of, so the cover page never contradicts the file beneath it."
   }
 }

@@ -32,7 +32,8 @@ The split is **current judgment vs. numbers vs. accumulating record**:
 - `stock_profile.json` holds everything needed to judge whether a stock matters today and what it is
   likely to do — including how it trades. Trading personality ("fades after limit-up") is identity,
   not history, so it lives here. Key levels live here too; they change often, but they are two or
-  three fields.
+  three fields. So does `recent_activity` — the last 2–3 notable days, one line each, replaced as new
+  ones arrive — so a daily run can see recent threads without opening the history file.
 - `financial_valuation_snapshot.json` keeps financials and valuation **together**: valuation
   assumptions only mean anything next to the financials that justify them, and splitting them leaves
   one half stale while the other is fresh.
@@ -192,7 +193,8 @@ If a file is stale and there is no time to refresh it, say the data is stale, ad
 - Update only the section that changed. Do not regenerate a profile to tidy it.
 - Update the matching `last_updated` / `as_of` field whenever content changes.
 - When a heavy file changes, update its summary in `stock_profile.json` so the cover page does not
-  contradict the file beneath it.
+  contradict the file beneath it. For the financial snapshot, that means `financial_digest`:
+  summary, valuation verdict, and the date the valuation was made.
 - Append to `change_log` when a view materially changes, so the reasoning stays recoverable.
 
 ## Checking what moves the stock

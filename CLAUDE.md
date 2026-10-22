@@ -201,12 +201,17 @@ a fourth place where rules live and drift out of sync.
 > Run the morning research program. Read `programs/morning_research.md` in your workspace and
 > execute it in order, then read `programs/morning_analysis.md` and execute that. Resolve all shared
 > files through `~/.openclaw/shared_files/paths.json`. Do not skip phases. If a required file is
-> missing or a source is blocked, say so explicitly rather than filling the gap. End with the single
-> consolidated report from the analysis program, followed by the read-check token list.
+> missing or a source is blocked, say so explicitly rather than filling the gap. Send the research
+> report when the research program says to, then the analysis report, ending with the read-check
+> token list and whether the session was compacted.
 
-**Both files in one prompt, deliberately.** They must share a session — the analysis run works from
-the research findings held in context. Splitting them into two cron jobs would force the analysis to
-reconstruct state from the logs, which is both lossy and expensive.
+**Both files in one prompt, deliberately.** They share a session, so the analysis can build on the
+research directly. The research run also writes its findings and handoff to a per-run `run notes`
+file, so the analysis does not depend on context surviving compaction (see `morning_research.md` →
+*The run notes file*).
+
+**Two reports:** the research report (news digest, no calls) is sent at the end of
+`morning_research.md`; the analysis report (the call, predictions, watchlist) follows.
 
 **Timing:** pre-open, Asia/Shanghai (GMT+8). Roughly 07:30–08:30, finishing before the 09:15
 auction. Leave enough margin that a slow search does not push the report past the open.
@@ -221,7 +226,8 @@ Deployment is a `git pull` on the OpenClaw workstation, where this repo's root s
 ### ⚠ The agent writes to git-tracked files
 
 This is the thing most likely to bite. The researcher writes to `shared_files/` during normal
-operation — `logs/*.jsonl`, `sectors.md`, and `stock_profiles/<code>/`. All of those are tracked.
+operation — `logs/*.jsonl`, `sectors.md`, `stock_profiles/<code>/`, `runs/` (one file per run), and
+`tracked_stocks.json` (`upcoming_events`). All of those are tracked.
 
 Consequences to watch for:
 
@@ -253,7 +259,10 @@ Consequences to watch for:
    - the report separates facts / interpretation / prediction / uncertainty, and actually commits to
      a view rather than only describing;
    - the read-check list shows the files you expected — especially **both** `RC-SECRDME-TOP-T8B3`
-     and `RC-SECRDME-END-W5J1`, since TOP without END means a truncated read.
+     and `RC-SECRDME-END-W5J1`, since TOP without END means a truncated read;
+   - today's `run notes` file exists, has a section per phase with exact figures and sources, and
+     its write candidates match what actually got written;
+   - both reports arrived, and whether the session was compacted.
 6. **Then** create the cron job, once the agent name/id below is known.
 
 ## Unverified OpenClaw behavior
@@ -276,3 +285,15 @@ Not confirmable without the doc mirror or the live install. Do not assume:
   the split is still correct, but the reasoning behind it changes. Verify before relying on it.
 - Cron syntax, delivery target, and whether a cron run gets a fresh session.
 - Whether the runtime expands `~` on Windows.
+- **Whether a cron run can send a message mid-run.** The two-report design needs the research report
+  sent to Feishu halfway through. A cron job may deliver only its final output; mid-run sending
+  needs a messaging tool usable inside a cron session.
+- **Compaction settings on the workstation** (`openclaw.json`). Per docs.openclaw.ai (checked
+  2026-10-15): auto-compaction is on by default and summarises older turns near the context limit;
+  pruning of old tool results is off by default for non-Anthropic providers. Still to check: the
+  configured context window, the compaction reserve, whether a **memory flush** before compaction
+  is enabled (it could write research findings into memory files — an unplanned write location),
+  and whether the fetch tool caps page size (the cheapest way to keep a run under the threshold).
+- **Whether skills can run scripts here** — needed for a market-data skill. Requires `exec` enabled
+  for the researcher, and Python plus the data library installed (inside the sandbox if sandboxed).
+  See `research_design.md` → Open Review Item 13.

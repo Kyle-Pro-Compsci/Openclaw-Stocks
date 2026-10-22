@@ -20,6 +20,7 @@ on it.
 ## 半导体 / Semiconductors
 
 ### Current sector state
+- Status: active
 - Current view: TODO — first run
 - Heat status: unclear
 - Stage: unclear
@@ -53,6 +54,7 @@ on it.
 ## 石油 / 航运 — Oil & Shipping
 
 ### Current sector state
+- Status: active
 - Current view: TODO — first run
 - Heat status: unclear
 - Stage: unclear
@@ -86,6 +88,7 @@ on it.
 ## 黄金 / Gold
 
 ### Current sector state
+- Status: active
 - Current view: TODO — first run
 - Heat status: unclear
 - Stage: unclear

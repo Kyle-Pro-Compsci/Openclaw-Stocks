@@ -62,5 +62,9 @@
     "weekly reflections": {
         "path": "~/.openclaw/shared_files/logs/weekly_reflections.jsonl",
         "description": "Weekly review summaries of what worked and what failed. Append-only."
+    },
+    "run notes": {
+        "path": "~/.openclaw/shared_files/runs/",
+        "description": "Directory of per-run working files, one per run, e.g. 2026-10-15_morning.md. Not a log. Holds a run's findings, write candidates, and handoff so they survive compaction. Format is defined in the program that writes it (programs/morning_research.md)."
     }
 }

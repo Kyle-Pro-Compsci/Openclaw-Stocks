@@ -13,6 +13,7 @@
 
 !claudetodo.txt
 !tempclaudeprompt.txt
+!HANDOVER.md
 
 # Keep the .gitignore itself tracked
 !.gitignore

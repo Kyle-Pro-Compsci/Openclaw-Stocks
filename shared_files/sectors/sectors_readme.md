@@ -61,7 +61,26 @@ If the information is useful but does not change the sector baseline, write it t
 
 ## Adding a new sector
 
-If the relevant sector is missing entirely or has not been filled out, it must be researched from scratch.
+A sector gets an entry through one of three routes:
+
+1. **User priority** — it is named in `user research priorities`. Always gets an entry.
+2. **Watchlist** — a stock in `tracked stocks` belongs to it. Create the entry when the stock is
+   added, or in the next run.
+3. **Market** — the sector is moving or in the news, and either:
+   - it has come up on two runs within a few days (the first time, note it in `daily market notes`
+     as a candidate sector); or
+   - at least two independent credible sources (grade B or better in `source guide`) report it as
+     hot.
+
+A single day's headline is not enough on its own.
+
+A new entry may start thin: fill what the research established, and leave the rest `TODO`.
+
+## Inactive sectors
+
+Never delete an entry. When a sector has gone cold and is not linked to a user priority or a tracked
+stock, set `Status: inactive` and leave the rest as it was. Its `Last reviewed` date shows how old
+the information is if the sector is ever revisited. Set it back to `active` when it qualifies again.
 
 ## LLM reasoning rule
 
@@ -85,6 +104,7 @@ Each sector should use this structure:
 ## <Sector / Theme Name>
 
 ### Current sector state
+- Status: active
 - Current view:
 - Heat status:
 - Stage:
@@ -118,6 +138,13 @@ Each sector should use this structure:
 ```
 
 ## Field guidance
+
+The labelled fields below use fixed vocabularies, so sectors can be compared over time. If no label
+fits well, pick the closest and explain the difference in *Current view*.
+
+### Status
+
+`active` or `inactive`. See *Inactive sectors*.
 
 ### Heat status
 

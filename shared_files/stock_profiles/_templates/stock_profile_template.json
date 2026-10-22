@@ -73,9 +73,15 @@
 
   "financial_digest": {
     "summary": "",
+    "valuation_status": "unknown",
+    "_valuation_status_options": "cheap | fair | expensive | speculative | unclear | unknown",
+    "valuation_as_of": "",
     "last_updated": "",
-    "_note": "One or two lines. Open financial_valuation_snapshot.json when quality or valuation actually matters."
+    "_note": "Copied from digest_for_stock_profile in financial_valuation_snapshot.json whenever that file changes. One or two lines plus the valuation verdict and its date. Open the snapshot when quality or valuation actually matters."
   },
+
+  "recent_activity": [],
+  "_recent_activity_note": "The last 2-3 notable trading days, one object each: { date, move, cause, follow_through }. Replace the oldest when a new one arrives - this is a short window, not a record. follow_through is 'pending' until it is visible. The full record is trading_history.jsonl.",
 
   "stock_specific_refresh_triggers": [],
   "_refresh_note": "EXCEPTIONS ONLY - triggers unique to this stock, e.g. 'reacts to 光伏 tariff news'. Standard triggers (new report, guidance, rerating, risk events) apply to every stock and live in stock_profiles_readme.md. Do not copy them here.",

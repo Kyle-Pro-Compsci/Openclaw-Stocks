@@ -67,6 +67,23 @@ These items were moved from `research.md` and `temp_notes.md` during v0 scaffold
 
 ---
 
+## Considered features
+
+Ideas deliberately not built yet. Each says what would make it worth doing.
+
+- **High / normal priority within `active` stocks.** Different handling for the most important active
+  stocks — e.g. deeper daily checks — assigned manually or automatically by how much a stock has
+  been moving. Worth doing only once the two would actually be handled differently.
+- **One playbook for the whole morning run.** `research_playbook.md` already holds analysis
+  methodology too (*Taking a stance*, *Prediction quality*). It could become a single
+  morning-run playbook, or be split into research and analysis playbooks. Not urgent; revisit
+  during the clarity rewrite (Item 15).
+- **Coded skills for mechanical steps** — data fetching, the full-watchlist announcement check,
+  removing past `upcoming_events`, counting. Cuts tokens once the steps are stable (see Item 13).
+- **Daily summary note for steady days** — one `type: summary` observation per run, so a quiet
+  market is recorded in the logs and not only in the report. (Now planned for the post-close run;
+  see Item 12.)
+
 ## Open Review Items
 
 Deferred design reviews, addressed to whoever is maintaining this repo (a Claude Code session or
@@ -211,19 +228,19 @@ Found during the 2026-09-25 handover review. Each is a small fix; do them in one
   refresh date; only the financial snapshot has `refresh_control.next_suggested_refresh`.
 - `research_playbook.md` → *Methodology* step 5 says to start from the latest weekly baseline. No
   baseline exists yet, and `morning_research.md` never mentions one.
-- `morning_research.md` Phase 2 says its classification uses the vocabularies in `sectors readme`,
-  but `view_change` and `follow_up_needed` are not defined there.
-- `morning_research.md` uses `daily_market_note` as a write label and `daily market notes` as the
-  file key. Pick one form.
 - `sectors_readme.md`: `move_quality` lists both `unclear` and `unsure`; *Bloat control* mentions a
   "Recent changes" section that is not in the entry format; the optional *Review triggers* section
   is not in the format template, although `sectors.md` includes it.
 - `logs_readme.md`: says the logs live in `shared/`; describes `prediction_log` as holding "a stock
   prediction or research note" (it is predictions only, of any target type); the `id` format is
   only implied by the examples.
-- `stock_profiles_readme.md` → *How triggers get checked* now says company-specific news must be
-  looked up for each tracked stock, but `morning_research.md` Phase 3 has no step that does this.
-  Add a per-stock announcement check (cninfo or search) when reviewing that program.
+- `stock_profiles_readme.md` → *How triggers get checked* says company-specific news must be looked
+  up for each tracked stock; `morning_research.md` Phase 3 now checks `priority: high` stocks only.
+  Reword the readme to match, or close the gap with the full watchlist check in Item 13.
+- `stock_profile_template.json` → `identity.status` (default `"active"`) can now be confused with
+  `tracking` in `tracked_stocks.json`. Decide what it means — listing status (listed / suspended /
+  ST / delisted) would be useful — and rename or remove it. `tracking` is the only place that says
+  how closely a stock is followed.
 - Open Review Item 3 above (staleness policy) is now mostly answered by
   `stock_profiles_readme.md` → *Staleness*. Check what is left, then close it.
 
@@ -253,6 +270,27 @@ Candidates, to brainstorm (user, pending):
   `daily market notes`;
 - a weekly pass writes all of the week's pending entries at once.
 
+**Decided (2026-10-20): write the entry at the next day's close.** For a notable day D:
+
+1. **Post-close run on D** — records the day in the profile's `recent_activity` with
+   `follow_through: pending`.
+2. **Post-close run on D+1** — fills in `follow_through` (did it gap, hold, fade, or extend?) and
+   writes the `trading_history.jsonl` entry.
+
+Why D+1: in A-shares whether a big move holds is mostly settled by the next session (T+1
+settlement means first-day buyers can only sell on day two). D alone is too early. D+2 mainly
+matters for limit-up streaks, but if D+1 is itself notable it gets its own entry, so a streak
+appears as a run of entries anyway.
+
+**Not yet applied to the programs:** `morning_research.md` Phase 5 still says the morning run
+records the day in `recent_activity`. That moves to the post-close run once it is written; the
+morning run only reads `recent_activity`.
+
+**Seeding a new stock** is separate: filling `recent_activity` and `trading_history.jsonl` for a
+newly tracked stock means looking back over previous days and weeks, which needs historical price
+data — the market data skill (Item 13), or patchy web search until then. `stock_profiles_readme.md`
+→ *Seeding history* already says to do it only if the data is genuinely retrievable.
+
 ### 11. Watch during early runs
 
 Fields and thresholds set by judgment, not evidence. Check each against real output after the first
@@ -274,6 +312,73 @@ run* does each. Design the run schedule first, then assign each timed task to a 
 Known or likely runs: morning (pre-open, daily), end-of-day review (`daily_reflection.md`), weekly
 research, weekly reflection, and possibly a midday run during the lunch break.
 
+User input (2026-10-19):
+
+- **Runs wanted:** every trading day — a morning run (research + analysis), possibly a midday
+  check on how the market is going and whether to adjust, and a post-close run for reflection and
+  self-improvement. The post-close run may **propose** edits to program files (to try it). Weekly
+  or monthly: more extensive runs — deeper stock research, deeper reflection, and more to be
+  worked out.
+- **Deadlines:** the morning report must be out by **09:00** Shanghai. The midday run must start and
+  finish within **11:30–13:00**.
+- **Cost:** results matter more than cost, but write efficiently. Later, program-like parts can be
+  replaced by coded skills to cut tokens.
+- **Watchlist:** 5–20 stocks, with tiers — some watched actively, some reported only when movement
+  is detected.
+- **Trading history timing (Item 10):** decided — the entry is written at the next day's close.
+  See Item 10.
+
+Decisions and proposals (2026-10-20):
+
+- **Morning run: one cron job, starting 08:00**, with the KOSPI and Nikkei opens (both 08:00
+  Shanghai) read as the **last research step before Phase 5** (decide and write), so they have had
+  time to trade. A two-cron split was considered and rejected: one job could start before the other
+  finished, or run after the first failed. **Timing risk:** 08:00 → report by 09:00 is one hour for
+  research and analysis. Measure the duration in the manual run; if too slow, start earlier and keep
+  the Asia step late, or revisit.
+- **Hong Kong opens at 09:30**, after the morning report, so HK spillover can only come from the
+  previous session and futures/ADRs.
+- **Post-close: two parts (proposed).** (1) **~15:10 results** — closing figures are on data sites
+  within minutes of the 15:00 close: score the day's predictions, record notable days, flags, and a
+  quick Feishu report for people waiting on results. (2) **Evening reflection, ~18:00 or later** —
+  self-improvement and proposed edits, after 龙虎榜 (the exchange's list of top buyers/sellers on
+  unusual stocks, published late afternoon) and most company announcements are out. No one is
+  waiting on it.
+- **What the morning run depends on from the previous post-close run** — make each an explicit
+  post-close task:
+  - `recent_activity` for each notable stock (follow-through pending);
+  - `key_levels` updated in the profile if a known level broke;
+  - a `type: summary` observation in `daily market notes`: how the market and each watched sector
+    closed — otherwise the morning run has no record of yesterday's close;
+  - `market outcomes` entries for the day's predictions (analysis Phase 0 reads them);
+  - `open_question` flags for abnormal moves.
+
+  If the post-close run failed or was skipped, the morning run must say so and look up yesterday's
+  close itself. Evening announcements are caught by the morning run's announcement check.
+- **Midday report (Feishu):** how the morning went — the overall market, each watched sector, each
+  stock; how that compares with what the morning run expected; and an updated afternoon call if the
+  view changed.
+- **Program edits from reflection: propose only.** Proposals go to a dedicated file the user reviews
+  and applies or rejects. The agent never applies them itself.
+- **Watchlist tiers (decided 2026-10-21, applied):** one field, `tracking: active | passive | off`,
+  replacing `status` and `priority` in `tracked_stocks.json`. `active` — full research and analysis
+  daily, with an announcement check. `passive` — held but not actively traded; mentioned whenever
+  movement, unusual volume, or relevant news is detected. `off` — files kept, never selected. The
+  morning run checks passive stocks' previous session; **the midday run should check their first
+  half of the day** the same way.
+- **Longer-cycle runs, to design later, in this order:**
+  1. **Weekly (weekend):** reflection — score the week, compare self-directed with scripted calls,
+     how views aged, curate lessons. Research — next week's calendar (data releases, policy
+     meetings, earnings dates → `upcoming_events`), profiles due for behavior refresh
+     (`[research]` → `[observed]`), sector sweep (inactive / candidate), remove past events.
+  2. **Monthly (first weekend):** valuation re-check for all active stocks; full baseline research
+     for newly added stocks; prune `learned research lessons`; review the month's proposed edits;
+     suggest watchlist changes for the user to decide.
+  3. **Earnings season (Apr / Aug / Oct):** a wave of financial-snapshot refreshes as reports land.
+
+  **Do a manual monthly run early**, to watch the self-improvement process — it must log what it
+  read, what it concluded, and every change it proposed or made, with reasons.
+
 Questions to settle:
 
 - **Event checks vs. time checks.** Event triggers (a new report, a 减持 filing) are found in that
@@ -291,7 +396,16 @@ Questions to settle:
   stores only *last reviewed* dates and relies on the readme's cadence. Pick one approach for all
   files.
 - **Selecting stale stocks** without opening every profile: is a date in `tracked_stocks.json`
-  worth the duplication, or is opening each cover page weekly cheap enough?
+  worth the duplication, or is opening each cover page weekly cheap enough? `morning_research.md`
+  Phase 3 criterion 6 (stale on time) currently selects them daily — move it if time checks go
+  weekly.
+- **Overnight flags for abnormal price/volume.** An end-of-day run flags unusual moves for the next
+  morning via `open_question` in `daily market notes`; Phase 0 already reads those. Agreed in
+  principle (2026-10-15); needs the end-of-day run designed.
+- **Marking sectors inactive** (`sectors_readme.md` → *Inactive sectors*): which run checks for
+  sectors that have gone cold?
+- **`upcoming_events` cleanup**: `tracked_stocks_readme.md` says to remove past events, but no run
+  is assigned to do it.
 
 ### 13. Market data ingestion — likely an OpenClaw skill
 
@@ -313,8 +427,16 @@ decides what the review can do.
      sandboxed, not just on the host.
 - Then run a simple test: ask the agent in a manual session to fetch today's 上证指数 close, a
   sector ranking, and 60 days of one stock's daily prices.
-- Prediction horizons must match the data available. If only daily closes can be fetched,
-  `morning_session` predictions cannot be scored without a midday run.
+- Prediction horizons must match the data available. **Before the skill exists**, the agent relies
+  on web search, where intraday figures are hard to find after the fact — so `morning_session`
+  predictions may only be scoreable by a midday run. **With the skill**, intraday data is available
+  (AKShare offers minute-level bars): it can produce the open, high and low with their times, the
+  11:30 level, and the close, which the agent turns into a short narrative. The post-close run can
+  then score morning-session calls itself; the midday run stays useful for the afternoon adjustment
+  and report.
+- The same skill should do the **full-watchlist announcement check**: one market-wide fetch of the
+  day's announcements (cninfo / 东方财富), filtered by watchlist codes. Until then,
+  `morning_research.md` Phase 3 checks `priority: high` stocks only.
 
 ### 14. A free-form thinking step in each program
 
@@ -322,6 +444,22 @@ The user wants the agent's own thinking used outside the fixed structure, not on
 `research_playbook.md` → *Self Thinking* allows it in general terms, with a `[self-directed]` tag,
 but no program gives it a dedicated step. To propose: one explicit free-form step per program,
 how its output is recorded, and how `weekly_reflection.md` compares it with the scripted output.
+
+Decided (user, 2026-10-19):
+
+- **Budget:** up to 3 extra searches per run. A ceiling, not a target — zero is fine when nothing
+  off-script is worth following, and the step then says so.
+- **Visibility:** the full step goes in `run notes`; its conclusions appear in the Feishu report,
+  tagged `[self-directed]`.
+
+- **Output:** may produce both logged predictions (`self_directed: true`) and views. Deliberately
+  loose to start — see what it does without a strict program, and restrain it only if results are
+  poor.
+- **Frequency:** only when the agent judges something is worth following (expected to be fairly
+  often). Otherwise one line: "nothing off-script today".
+
+Draft placement: research after Phase 4 (stock profile check); analysis after Phase 4 (stocks)
+as "argue against your top call"; a section in `weekly_reflection.md`.
 
 ### 15. Full clarity rewrite of the guidance files
 
@@ -342,8 +480,43 @@ Files already reviewed with the user can be done first; `stock_profiles_readme.m
 4. Replace vague pointers ("X explains this", "see X") with either an explicit instruction saying
    when to read the file, or a one-line summary inline, with the full rule left in its home file.
    A pointer loads nothing by itself; the agent has to decide to open the file.
-5. Show the user each file's diff before moving on to the next.
+5. Check that every rule in a readme that the agent must *act* on has a program step that triggers
+   it. A readme says how a file works; a program says when to do something. A readme rule with no
+   triggering step is dead text.
+6. Show the user each file's diff before moving on to the next.
 
 **Order:** the files the morning run reads first — `stock_profiles_readme.md`,
 `morning_research.md`, `morning_analysis.md`, `logs_readme.md`, `sectors_readme.md`,
 `research_playbook.md` — then the rest.
+
+### 16. How a call becomes a prediction or a view — revisit
+
+Raised by an independent review (2026-10-19): `morning_analysis.md` → *Forming calls* asks every call
+for a direction, timeframe, conditions, confidence, and invalidation — nearly the same as Phase 5's
+test for logging a prediction. So every call qualifies, and `view` notes stay empty. The user feels
+patching the test adds complexity over a more basic question: how calls are formed in the first
+place.
+
+Options (user, 2026-10-21):
+
+1. **Decide at the moment of analysis, by confidence.** The agent decides whether a call is a
+   prediction or a view, then formats it — a strict prediction entry (target, threshold, time,
+   invalidation) or a simple view ("this rally feels late").
+2. **A test applied afterwards** — e.g. "can it be scored mechanically from data that will exist?"
+
+**Caveat on option 1:** confidence and scoreability are different things. The prediction log's
+`confidence` field exists so the reflection can check **calibration** — are 0.55 calls right about
+55% of the time? If only high-confidence calls are logged, low-confidence ones are never scored,
+and the system cannot learn whether its confidence means anything. A precise call held with low
+confidence is still worth logging. A hybrid: decide by whether the call *can* be stated precisely;
+confidence is then recorded, not used to choose.
+
+**Decided (2026-10-22): the hybrid, applied** in `morning_analysis.md` → *Prediction or view*. The
+agent judges by precision, with guidance and examples; the market call and each sector call are
+always predictions unless explicitly abstained. The boundary is the agent's judgment — no mechanism.
+Later, `weekly_reflection.md` could read the week's views and note which could have been
+predictions; add that when the weekly run is designed, not before.
+
+**Knock-on drift:** `research_playbook.md` → *Taking a stance* still says every stance carries a
+confidence and what would make it wrong. Views no longer need those. Align it during the clarity
+rewrite (Item 15).
